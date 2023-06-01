@@ -14,6 +14,6 @@ optional RANDOM-STATE parameter can used instead."
   (let ((base (random #xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
                       (or random-state *random*))))
     (setf (ldb (byte 4 76) base) #x4 ; Set version to random
-          (ldb (byte 2 62) base) 2) ; Set variant to IETF
+          (ldb (byte 2 62) base) #b10) ; Set variant to IETF
     (from-integer base)))
 
