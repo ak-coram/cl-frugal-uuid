@@ -5,6 +5,10 @@
 (defvar *random* nil)
 
 (defun make-v4 (&optional random-state)
+  "Generate random uuid value (version 4).
+
+Initializes own random-state when first invoked. Alternatively the
+optional RANDOM-STATE parameter can used instead."
   (unless *random* (setf *random* (make-random-state t)))
   ;; Generate 128-bit random value
   (let ((base (random #xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
