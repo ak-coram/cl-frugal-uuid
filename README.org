@@ -1,5 +1,18 @@
 * cl-frugal-uuid (WiP)
 
+#+begin_html
+<div align="center">
+  <a href="https://upload.wikimedia.org/wikipedia/commons/5/5f/NASA_satellite_view_of_Southern_Ocean_phytoplankton_bloom_%28crop%29.jpg" target="_blank">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/NASA_satellite_view_of_Southern_Ocean_phytoplankton_bloom_%28crop%29.jpg/320px-NASA_satellite_view_of_Southern_Ocean_phytoplankton_bloom_%28crop%29.jpg" width="220" height="157">
+  </a>
+</div>
+<p align="center">
+  <a href="https://github.com/ak-coram/cl-frugal-uuid/actions">
+    <img alt="Build Status" src="https://github.com/ak-coram/cl-frugal-uuid/workflows/CI/badge.svg" />
+  </a>
+</p>
+#+end_html
+
 Common Lisp [[https://en.wikipedia.org/wiki/Universally_unique_identifier][UUID]] library with zero dependencies
 
 ** Rationale
@@ -10,6 +23,12 @@ Common Lisp [[https://en.wikipedia.org/wiki/Universally_unique_identifier][UUID]
 ** Limitations
 
 Currently only generating random UUIDs (Version 4) is supported.
+
+The following implementations and operating systems are tested via [[https://github.com/ak-coram/cl-frugal-uuid/blob/main/.github/workflows/CI.yml][CI]]:
+
+- [[https://sbcl.org/][SBCL]] (Linux, Windows, macOS)
+- [[https://ccl.clozure.com/][CCL]] (Linux, macOS)
+- [[https://ecl.common-lisp.dev/][ECL]] (Linux, macOS)
 
 ** Installation
 
@@ -41,3 +60,4 @@ distribution:
 ** Legal
 
 - Released under the MIT License.
+- [[https://commons.wikimedia.org/wiki/File:NASA_satellite_view_of_Southern_Ocean_phytoplankton_bloom_(crop).jpg][Source]] for README photo
