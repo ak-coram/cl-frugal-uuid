@@ -9,9 +9,7 @@
   ;; Generate 128-bit random value
   (let ((base (random #xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
                       (or random-state *random*))))
-    ;; Set version to random
-    (setf (ldb (byte 4 76) base) #x4)
-    ;; Set variant to IETF
-    (setf (ldb (byte 2 62) base) 2)
+    (setf (ldb (byte 4 76) base) #x4 ; Set version to random
+          (ldb (byte 2 62) base) 2) ; Set variant to IETF
     (from-integer base)))
 
