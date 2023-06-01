@@ -40,6 +40,28 @@ distribution:
   (ql:quickload :frugal-uuid)
 #+end_src
 
+** Basic usage
+
+#+begin_src lisp
+  ;; Generate random UUID
+  (fuuid:make-v4) ; => #<FRUGAL-UUID:UUID 3ffc05ba-9c35-4f21-8535-beba03a2495c>
+
+  ;; Convert random UUID to canonical string representation
+  (fuuid:to-string (fuuid:make-v4)) ; => "2172e412-06a6-4cfb-bbf1-3584aadaed15"
+
+  ;; Parse UUID from string
+  (fuuid:from-string "0909e4f4-8333-4712-8609-5ae02d735772")
+  ;; => #<FRUGAL-UUID:UUID 0909e4f4-8333-4712-8609-5ae02d735772>
+
+  ;; Compare two random UUID values
+  (fuuid:uuid= (fuuid:make-v4) (fuuid:make-v4)) ; => NIL
+
+  ;; Loosely compare UUID with canonical string representation
+  (fuuid:uuid-equal-p
+   (fuuid:from-string "0909e4f4-8333-4712-8609-5ae02d735772")
+   "0909e4f4-8333-4712-8609-5ae02d735772") ; => T
+#+end_src
+
 ** Running tests
 
 - Load the tests via Quicklisp:
