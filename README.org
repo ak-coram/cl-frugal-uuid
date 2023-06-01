@@ -1,0 +1,43 @@
+* cl-frugal-uuid (WiP)
+
+Common Lisp [[https://en.wikipedia.org/wiki/Universally_unique_identifier][UUID]] library with zero dependencies
+
+** Rationale
+
+- Permissive license (MIT)
+- Small (e.g. doesn't rely on [[https://github.com/sharplispers/ironclad][Ironclad]])
+
+** Limitations
+
+Currently only generating random UUIDs (Version 4) is supported.
+
+** Installation
+
+cl-frugal-uuid can be installed via [[https://www.quicklisp.org/][Quicklisp]] from the [[https://ultralisp.org/][Ultralisp]]
+distribution:
+
+#+begin_src lisp
+  (ql-dist:install-dist "http://dist.ultralisp.org/" :prompt nil)
+  (ql:quickload :frugal-uuid)
+#+end_src
+
+** Running tests
+
+- Load the tests via Quicklisp:
+
+#+begin_src lisp
+  (ql:quickload :frugal-uuid/test)
+#+end_src
+
+- Use [[https://asdf.common-lisp.dev/][ASDF]] or [[https://fiveam.common-lisp.dev/][FiveAM]] to run the tests:
+
+#+begin_src lisp
+  ;; Using ASDF:
+  (asdf:test-system :frugal-uuid)
+  ;; Using FiveAM directly:
+  (fiveam:run! :frugal-uuid)
+#+end_src
+
+** Legal
+
+- Released under the MIT License.
