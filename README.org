@@ -22,7 +22,14 @@ Common Lisp [[https://en.wikipedia.org/wiki/Universally_unique_identifier][UUID]
 
 ** Limitations
 
-Currently only generating random UUIDs (Version 4) is supported.
+Currently only generating random UUIDs (Version 4) is
+supported. Please note that by default the implementation dependent
+built-in CL random number generator is used, which might not be of
+sufficient quality for your purposes. The use of cryptographic-quality
+random numbers is strongly recommended in order to reduce the
+probability of repeated values. Please see the section of this README
+on "UUID Version 4" for setting up an alternative source of random
+numbers.
 
 The following implementations and operating systems are tested via [[https://github.com/ak-coram/cl-frugal-uuid/blob/main/.github/workflows/CI.yml][CI]]:
 
@@ -60,6 +67,66 @@ distribution:
   (fuuid:uuid-equal-p
    (fuuid:from-string "0909e4f4-8333-4712-8609-5ae02d735772")
    "0909e4f4-8333-4712-8609-5ae02d735772") ; => T
+#+end_src
+
+** UUID Versions
+
+*** Version 4
+
+If you have an alternative source of random numbers, you can use it
+instead of the built-in random number generator. Please consult the
+documentation of your chosen library for details on thread-safety if
+you intend to use this in a multi-threaded program.
+
+Below you'll find and example using the [[https://github.com/avodonosov/secure-random][secure-random]] library which
+relies on OpenSSL:
+
+#+begin_src lisp
+  ;; Load library for generating secure random numbers
+  (ql:quickload :secure-random)
+
+  ;; Setup random number generator
+  (fuuid:initialize-v4-random #'secure-random:number
+                              secure-random:*generator*)
+
+  ;; Generate random UUID using secure random numbers
+  (fuuid:make-v4) ; => #<FRUGAL-UUID:UUID 4bed852c-e726-4007-9a1f-e569a59d060a>
+#+end_src
+
+Another alternative setup using [[https://github.com/sharplispers/ironclad][Ironclad]]:
+
+#+begin_src lisp
+  (ql:quickload :ironclad)
+
+  ;; Setup random number generator
+  (fuuid:initialize-v4-random #'crypto:strong-random
+                              (ironclad:make-prng :os))
+
+  ;; Generate random UUID using Ironclad
+  (fuuid:make-v4) ; => #<FRUGAL-UUID:UUID 4bed852c-e726-4007-9a1f-e569a59d060a>
+
+  ;; Use the default Ironclad PRNG instead:
+  (fuuid:initialize-v4-random #'crypto:strong-random)
+  (fuuid:make-v4) ; => #<FRUGAL-UUID:UUID 547d5dce-1de5-41f7-bd6f-22de70e898a7>
+#+end_src
+
+Alternatively you can use 128-bit random integers directly:
+
+#+begin_src lisp
+  (fuuid:make-v4-from-integer
+   (secure-random:number #xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF))
+#+end_src
+
+Some other examples which might be helpful:
+
+#+begin_src lisp
+  ;; Dynamically bind random number generator:
+  (fuuid:with-v4-random-number-generator (make-random-state t)
+    (fuuid:make-v4))
+
+  ;; Dynamically bind both random number generator & random function:
+  (fuuid:with-v4-random (#'random (make-random-state t))
+    (fuuid:make-v4))
 #+end_src
 
 ** Running tests

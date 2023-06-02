@@ -13,4 +13,8 @@
            #:uuid-equal-p
 
            ;; Version 4
-           #:make-v4))
+           #:initialize-v4-random
+           #:make-v4-from-integer
+           #:make-v4
+           #:with-v4-random
+           #:with-v4-random-number-generator))
