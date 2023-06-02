@@ -28,7 +28,7 @@ built-in CL random number generator is used, which might not be of
 sufficient quality for your purposes. The use of cryptographic-quality
 random numbers is strongly recommended in order to reduce the
 probability of repeated values. Please see the section of this README
-on "UUID Version 4" for setting up an alternative source of random
+on UUID Version 4 for setting up an alternative source of random
 numbers.
 
 The following implementations and operating systems are tested via [[https://github.com/ak-coram/cl-frugal-uuid/blob/main/.github/workflows/CI.yml][CI]]:
@@ -93,28 +93,26 @@ relies on OpenSSL:
   (fuuid:make-v4) ; => #<FRUGAL-UUID:UUID 4bed852c-e726-4007-9a1f-e569a59d060a>
 #+end_src
 
-Another alternative setup using [[https://github.com/sharplispers/ironclad][Ironclad]]:
-
-#+begin_src lisp
-  (ql:quickload :ironclad)
-
-  ;; Setup random number generator
-  (fuuid:initialize-v4-random #'crypto:strong-random
-                              (ironclad:make-prng :os))
-
-  ;; Generate random UUID using Ironclad
-  (fuuid:make-v4) ; => #<FRUGAL-UUID:UUID 4bed852c-e726-4007-9a1f-e569a59d060a>
-
-  ;; Use the default Ironclad PRNG instead:
-  (fuuid:initialize-v4-random #'crypto:strong-random)
-  (fuuid:make-v4) ; => #<FRUGAL-UUID:UUID 547d5dce-1de5-41f7-bd6f-22de70e898a7>
-#+end_src
-
-Alternatively you can use 128-bit random integers directly:
+Alternatively you can pass 128-bit random integers directly:
 
 #+begin_src lisp
   (fuuid:make-v4-from-integer
    (secure-random:number #xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF))
+#+end_src
+
+Another alternative setup using [[https://github.com/sharplispers/ironclad][Ironclad]]:
+
+#+begin_src lisp
+  (ql:quickload :ironclad/prngs)
+
+  ;; Use the default Ironclad PRNG:
+  (fuuid:initialize-v4-random #'crypto:strong-random)
+  (fuuid:make-v4) ; => #<FRUGAL-UUID:UUID 547d5dce-1de5-41f7-bd6f-22de70e898a7>
+
+  ;; Setup with custom PRNG:
+  (fuuid:initialize-v4-random #'crypto:strong-random
+                              (ironclad:make-prng :os))
+  (fuuid:make-v4) ; => #<FRUGAL-UUID:UUID 4bed852c-e726-4007-9a1f-e569a59d060a>
 #+end_src
 
 Some other examples which might be helpful:
