@@ -22,7 +22,8 @@ Common Lisp [[https://en.wikipedia.org/wiki/Universally_unique_identifier][UUID]
 
 ** Limitations
 
-Currently only generating random UUIDs (Version 4) is supported.
+Currently only generating timestamp based UUIDs (Version 1) and random
+UUIDs (Version 4) is supported.
 
 Please note that by default the implementation dependent built-in CL
 random number generator is used, which might not be of sufficient
@@ -50,6 +51,9 @@ distribution:
 ** Basic usage
 
 #+begin_src lisp
+  ;; Generate version 1 UUID
+  (fuuid:make-v1) ; => #<FRUGAL-UUID:UUID 58c3e000-1875-100c-a524-89154ef00c1c>
+
   ;; Generate random UUID
   (fuuid:make-v4) ; => #<FRUGAL-UUID:UUID 3ffc05ba-9c35-4f21-8535-beba03a2495c>
 
@@ -118,6 +122,26 @@ An alternative setup using [[https://github.com/sharplispers/ironclad][Ironclad]
 #+end_src
 
 ** UUID Versions
+
+*** Version 1
+
+Node ID and clock sequence are initialized randomly by default, but
+you can provide your own values (or even your own function for
+generating timestamp values) using MAKE-V1-GENERATOR.
+
+To avoid repeated values, it is recommended for multithreaded
+applications to use a separate generator for each thread. Please also
+see the section on randomness for setting up alternative sources for
+random numbers.
+
+ For example:
+
+#+begin_src lisp
+  (bordeaux-threads-2:make-thread
+   (lambda ()
+     (format t "~A" (fuuid:make-v1)))
+   :initial-bindings `((fuuid:*v1-generator* . ,(fuuid:make-v1-generator))))
+#+end_src
 
 *** Version 4
 

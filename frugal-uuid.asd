@@ -7,7 +7,10 @@
   :serial t
   :components ((:file "package")
                (:file "frugal-uuid")
+               (:file "frugal-uuid-node")
+               (:file "frugal-uuid-clock")
                (:file "frugal-uuid-random")
+               (:file "frugal-uuid-v1")
                (:file "frugal-uuid-v4"))
   :in-order-to ((test-op (test-op "frugal-uuid/test"))))
 

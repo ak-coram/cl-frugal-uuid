@@ -32,6 +32,7 @@
   (is (fuuid:uuid= (fuuid:make-nil) (fuuid:make-nil)))
   (is (fuuid:uuid-equal-p nil nil))
   (is (not (fuuid:uuid-equal-p nil (fuuid:make-nil))))
+  (is (not (fuuid:uuid= (fuuid:make-v1) (fuuid:make-v4))))
   (dotimes (_ 10)
     (let* ((uuid (fuuid:make-v4))
            (s (fuuid:to-string uuid)))
@@ -57,3 +58,17 @@
                                                  (fuuid:from-string b))))
               :into n
             :finally (return (eql (length uuids) n)))))
+
+(test v1-uniqueness
+  (is (zerop
+       (loop :with generator
+               := (fuuid:make-v1-generator
+                   :timestamp-generator (fuuid:make-timestamp-generator
+                                         :offset-increment 1000000
+                                         :sleep-interval 0.2))
+             :with prev := nil
+             :for x :below 30
+             :for id := (fuuid:with-v1-generator generator
+                          (fuuid:to-integer (fuuid:make-v1)))
+             :count (eql id prev)
+             :do (setf prev id)))))
