@@ -37,7 +37,7 @@
         (time-high-and-version #xFFFF))
     (setf (ldb (byte 2 6) clock-seq-high) #b10 ; Set variant to IETF
           (ldb (byte 6 0) clock-seq-high) (ldb (byte 6 8) clock-seq)
-          (ldb (byte 4 12) time-high-and-version) #x1
+          (ldb (byte 4 12) time-high-and-version) #x1 ; Set version to 1
           (ldb (byte 12 0) time-high-and-version) (ldb (byte 12 48) timestamp))
     (make-instance 'uuid
                    :time-low (ldb (byte 32 0) timestamp)
