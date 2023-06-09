@@ -9,6 +9,7 @@
            #:from-string
            #:to-string
            #:make-nil
+           #:make-omni
            #:uuid=
            #:uuid-equal-p
 

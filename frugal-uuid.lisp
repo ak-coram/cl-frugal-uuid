@@ -88,6 +88,16 @@
                  :clock-seq-low 0
                  :node 0))
 
+(defun make-omni ()
+  "Create uuid value with all bits set to one."
+  (make-instance 'uuid
+                 :time-low #xFFFFFFFF
+                 :time-mid #xFFFF
+                 :time-hi-and-version #xFFFF
+                 :clock-seq-hi-and-res #xFF
+                 :clock-seq-low #xFF
+                 :node #xFFFFFFFFFFFF))
+
 (declaim (ftype (function (uuid uuid) boolean) uuid=))
 (defun uuid= (x y)
   "Strictly compare uuid inputs for equality.
