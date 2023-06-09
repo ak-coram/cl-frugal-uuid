@@ -12,9 +12,11 @@
            #:uuid=
            #:uuid-equal-p
 
+           ;; Randomness
+           #:initialize-random
+           #:with-random
+           #:with-random-number-generator
+
            ;; Version 4
-           #:initialize-v4-random
            #:make-v4-from-integer
-           #:make-v4
-           #:with-v4-random
-           #:with-v4-random-number-generator))
+           #:make-v4))
