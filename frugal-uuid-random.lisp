@@ -13,7 +13,7 @@ The provided RANDOM-NUMBER-FUNCTION is expected to take two arguments:
 the first is a limit below which a non-negative random number should
 be generated and the second is the value of the
 RANDOM-NUMBER-GENERATOR argument. When no random number generator is
-provided, RANDOM-NUMBER-FUNCTION is called witha a single LIMIT
+provided, RANDOM-NUMBER-FUNCTION is called with a single LIMIT
 argument."
   (setf *random-number-generator* random-number-generator
         *random-number-function* random-number-function)
