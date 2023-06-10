@@ -18,7 +18,7 @@ Common Lisp [[https://en.wikipedia.org/wiki/Universally_unique_identifier][UUID]
 ** Rationale
 
 - Permissive license (MIT)
-- Small (e.g. doesn't rely on [[https://github.com/sharplispers/ironclad][Ironclad]])
+- Small (e.g. doesn't rely on [[https://github.com/sharplispers/ironclad][Ironclad]] by default)
 
 ** Limitations
 
@@ -31,6 +31,9 @@ quality for your purposes. The use of cryptographic-quality random
 numbers is strongly recommended in order to reduce the probability of
 repeated values. Please see the section on randomness in this README
 for setting up an alternative source of random numbers.
+
+You can also use the [[https://github.com/ak-coram/cl-frugal-uuid#non-frugal-setup][:frugal-uuid/non-frugal]] system to change the
+defaults.
 
 The following implementations and operating systems are tested via [[https://github.com/ak-coram/cl-frugal-uuid/blob/main/.github/workflows/CI.yml][CI]]:
 
@@ -73,12 +76,43 @@ distribution:
    "0909e4f4-8333-4712-8609-5ae02d735772") ; => T
 #+end_src
 
+** non-frugal setup
+
+#+begin_src lisp
+  (ql:quickload :frugal-uuid/non-frugal)
+#+end_src
+
+The above system is provided to conveniently setup the following:
+
+- Use Ironclad PRNG to generate strong random numbers.
+- Automatically use a new PRNG for each new thread (via
+  bordeaux-threads).
+- Randomize node ID and clock sequence for generating version 1 UUIDs
+  for each new thread (via bordeaux-threads).
+
+See [[https://github.com/ak-coram/cl-frugal-uuid/blob/main/non-frugal.lisp][non-frugal.lisp]] for details.
+
 ** Randomness
 
 If you have an alternative source of random numbers, you can use it
 instead of the built-in random number generator. Please consult the
 documentation of your chosen implementation or library for details on
 thread-safety if you intend to use this in a multi-threaded program.
+
+*** Ironclad
+
+A setup using [[https://github.com/sharplispers/ironclad][Ironclad]]:
+
+#+begin_src lisp
+  (ql:quickload :ironclad/prngs)
+
+  ;; Use the default Ironclad PRNG:
+  (fuuid:initialize-random #'crypto:strong-random)
+
+  ;; Setup with custom PRNG:
+  (fuuid:initialize-random #'crypto:strong-random
+                           (ironclad:make-prng :os))
+#+end_src
 
 *** secure-random
 
@@ -92,21 +126,6 @@ relies on OpenSSL:
   ;; Setup random number generator
   (fuuid:initialize-random #'secure-random:number
                            secure-random:*generator*)
-#+end_src
-
-*** Ironclad
-
-An alternative setup using [[https://github.com/sharplispers/ironclad][Ironclad]]:
-
-#+begin_src lisp
-  (ql:quickload :ironclad/prngs)
-
-  ;; Use the default Ironclad PRNG:
-  (fuuid:initialize-random #'crypto:strong-random)
-
-  ;; Setup with custom PRNG:
-  (fuuid:initialize-random #'crypto:strong-random
-                           (ironclad:make-prng :os))
 #+end_src
 
 *** Dynamic binding
