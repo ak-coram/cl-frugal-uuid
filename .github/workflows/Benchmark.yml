@@ -1,0 +1,33 @@
+name: Benchmark
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  test:
+    name: ${{ matrix.lisp }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        lisp: [sbcl-bin, ccl-bin/1.12.1, ecl/21.2.1]
+        os: [ubuntu-latest]
+    env:
+      LISP: ${{ matrix.lisp }}
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Lisp
+        continue-on-error: true
+        uses: 40ants/setup-lisp@v2
+        with:
+          qlfile-template: |
+            dist ultralisp http://dist.ultralisp.org
+
+      - name: Run benchmarks
+        shell: bash
+        run: |
+          ros run --eval '(progn (ql:quickload :frugal-uuid/benchmark) (asdf:test-system :frugal-uuid/benchmark) (quit))'

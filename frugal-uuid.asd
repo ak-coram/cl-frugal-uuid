@@ -20,6 +20,17 @@
   :components ((:file "frugal-uuid-test"))
   :perform (test-op (o c) (symbol-call :fiveam '#:run! :frugal-uuid)))
 
+(asdf:defsystem #:frugal-uuid/benchmark
+  :depends-on (#:frugal-uuid
+               #:trivial-benchmark
+               #:ironclad/prngs
+               #:secure-random)
+  :components ((:file "frugal-uuid-benchmark"))
+  :perform (test-op
+            (o c)
+            (symbol-call :frugal-uuid/benchmark '#:run-benchmarks)))
+
 (asdf:defsystem #:frugal-uuid/*
   :depends-on (#:frugal-uuid
-               #:frugal-uuid/test))
+               #:frugal-uuid/test
+               #:frugal-uuid/benchmark))
