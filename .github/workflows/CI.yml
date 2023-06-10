@@ -46,6 +46,7 @@ jobs:
         run: |
           ros install neil-lindquist/ci-utils
           run-fiveam -e t -l frugal-uuid/test :frugal-uuid
+          run-fiveam -e t -l frugal-uuid/non-frugal -l frugal-uuid/test :frugal-uuid
 
       - name: Run tests (Windows)
         if: runner.os == 'Windows'
@@ -53,3 +54,4 @@ jobs:
         run: |
           ros install neil-lindquist/ci-utils
           run-fiveam -e t -l frugal-uuid/test :frugal-uuid
+          run-fiveam -e t -l frugal-uuid/non-frugal -l frugal-uuid/test :frugal-uuid
