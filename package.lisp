@@ -8,6 +8,8 @@
            #:to-integer
            #:from-string
            #:to-string
+           #:from-octets
+           #:to-octets
            #:make-nil
            #:make-omni
            #:uuid=
@@ -38,4 +40,18 @@
 
            ;; Version 4
            #:make-v4-from-integer
-           #:make-v4))
+           #:make-v4
+
+           ;; Version 5 (and 3)
+           #:+ns-url+
+           #:+ns-dns+
+           #:+ns-oid+
+           #:+ns-x500+
+           #:*ns-url*
+           #:*ns-dns*
+           #:*ns-oid*
+           #:*ns-x500*
+           #:make-v3-from-octets
+           #:make-v5-from-octets
+           #:make-v3
+           #:make-v5))

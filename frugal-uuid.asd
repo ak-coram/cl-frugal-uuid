@@ -11,7 +11,8 @@
                (:file "frugal-uuid-clock")
                (:file "frugal-uuid-random")
                (:file "frugal-uuid-v1")
-               (:file "frugal-uuid-v4"))
+               (:file "frugal-uuid-v4")
+               (:file "frugal-uuid-v5"))
   :in-order-to ((test-op (test-op "frugal-uuid/test"))))
 
 (asdf:defsystem #:frugal-uuid/test
@@ -22,8 +23,11 @@
 
 (asdf:defsystem #:frugal-uuid/non-frugal
   :depends-on (#:frugal-uuid
+               #:babel
                #:bordeaux-threads
-               #:ironclad/prngs)
+               #:ironclad/prngs
+               #:ironclad/digest/md5
+               #:ironclad/digest/sha1)
   :components ((:file "non-frugal")))
 
 (asdf:defsystem #:frugal-uuid/benchmark
