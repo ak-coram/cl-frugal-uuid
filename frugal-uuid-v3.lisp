@@ -15,4 +15,4 @@
   "Set the bits for version 3 and IETF variant, return uuid value."
   (make-v3-from-integer (octets-to-integer octets)))
 
-;; See non-frugal.lisp for MAKE-V3 implementation
+;; See non-frugal/name-based.lisp for MAKE-V3
