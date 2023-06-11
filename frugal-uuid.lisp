@@ -98,13 +98,14 @@
                   (aref octets octet-index))
         :finally (return i)))
 
-
 (declaim (ftype (function (uuid) (simple-array (unsigned-byte 8))) to-octets))
 (defun to-octets (uuid)
+  "Create a vector of octets from uuid value."
   (integer-to-octets (to-integer uuid)))
 
 (declaim (ftype (function ((simple-array (unsigned-byte 8))) uuid) from-octets))
 (defun from-octets (octets)
+  "Create uuid value from a vector of octets."
   (from-integer (octets-to-integer octets)))
 
 (defmethod print-object ((uuid uuid) stream)
