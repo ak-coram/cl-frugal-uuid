@@ -90,8 +90,8 @@ The above system is provided to conveniently setup the following:
   bordeaux-threads).
 - Randomize node ID and clock sequence for generating version 1 UUIDs
   for each new thread (via bordeaux-threads).
-- Define the `MAKE-V3` and `MAKE-V5` functions relying on the babel
-  and Ironclad libraries.
+- Define the MAKE-V3 and MAKE-V5 functions relying on the babel and
+  Ironclad libraries.
 
 See [[https://github.com/ak-coram/cl-frugal-uuid/blob/main/non-frugal.lisp][non-frugal.lisp]] for details.
 
@@ -134,8 +134,8 @@ See section for version 5 below.
 
 *** Version 5
 
-If you're using the `:frugal-uuid/non-frugal` system, then you can
-also generate name-based (version 3 or version 5) UUIDs:
+If you're using the :frugal-uuid/non-frugal system, then you can also
+generate name-based (version 3 or version 5) UUIDs:
 
 #+begin_src lisp
   (fuuid:make-v3 fuuid:*ns-url* "https://html5zombo.com/")
