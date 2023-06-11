@@ -15,6 +15,8 @@
 (defparameter *ns-oid* (from-integer +ns-oid+))
 (defparameter *ns-x500* (from-integer +ns-x500+))
 
+(declaim (ftype (function ((simple-array (unsigned-byte 8))) uuid)
+                make-v3-from-octets))
 (defun make-v3-from-octets (octets)
   "Set the bits for version 3 and IETF variant, return uuid value."
   (let ((i (octets-to-integer octets)))
@@ -22,6 +24,8 @@
           (ldb (byte 2 62) i) #b10)     ; Set variant to IETF
     (from-integer i)))
 
+(declaim (ftype (function ((simple-array (unsigned-byte 8))) uuid)
+                make-v5-from-octets))
 (defun make-v5-from-octets (octets)
   "Set the bits for version 5 and IETF variant, return uuid value."
   (let ((i (octets-to-integer octets)))
