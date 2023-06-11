@@ -117,6 +117,10 @@ random numbers.
    :initial-bindings `((fuuid:*v1-generator* . ,(fuuid:make-v1-generator))))
 #+end_src
 
+*** Version 2
+
+Generating "DCE security" UUIDs (version 2) is not implemented.
+
 *** Version 3
 
 See section for version 5 below.
