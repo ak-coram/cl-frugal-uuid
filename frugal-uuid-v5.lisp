@@ -5,7 +5,7 @@
 (declaim (ftype (function (t) uuid) make-v5-from-integer))
 (defun make-v5-from-integer (i)
   "Set the bits for version 5 and IETF variant, return uuid value."
-  (setf (ldb (byte 4 76) i) #x5      ; Set version to 3
+  (setf (ldb (byte 4 76) i) #x5      ; Set version to 5
         (ldb (byte 2 62) i) #b10)    ; Set variant to IETF
   (from-integer i))
 
