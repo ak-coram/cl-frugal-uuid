@@ -34,7 +34,10 @@ for setting up an alternative source of random numbers.
 
 You can also use the [[https://github.com/ak-coram/cl-frugal-uuid#non-frugal-setup][:frugal-uuid/non-frugal]] system to change the
 defaults and provide support for generating name-based UUIDs (versions
-3 and 5).
+3 and 5). This should only be necessary if you intend to securely
+generate new UUIDs via this library: for representing existing UUIDs
+(parsing, comparing and converting values) relying on the :frugal-uuid
+system should be sufficient.
 
 The following implementations and operating systems are tested via [[https://github.com/ak-coram/cl-frugal-uuid/blob/main/.github/workflows/CI.yml][CI]]:
 
