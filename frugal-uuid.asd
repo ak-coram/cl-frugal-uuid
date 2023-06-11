@@ -3,7 +3,7 @@
 (asdf:defsystem #:frugal-uuid
   :description "Common Lisp UUID library with zero dependencies"
   :author "Ákos Kiss <ak@coram.pub>"
-  :license  "MIT License"
+  :license "MIT License"
   :serial t
   :components ((:file "package")
                (:file "frugal-uuid")
@@ -24,14 +24,27 @@
   :components ((:file "frugal-uuid-test"))
   :perform (test-op (o c) (symbol-call :fiveam '#:run! :frugal-uuid)))
 
-(asdf:defsystem #:frugal-uuid/non-frugal
+(asdf:defsystem #:frugal-uuid/non-frugal/strong-random
+  :depends-on (#:frugal-uuid
+               #:ironclad/prngs)
+  :components ((:file "non-frugal/strong-random")))
+
+(asdf:defsystem #:frugal-uuid/non-frugal/thread-safe
+  :depends-on (#:frugal-uuid/non-frugal/strong-random
+               #:bordeaux-threads)
+  :components ((:file "non-frugal/thread-safe")))
+
+(asdf:defsystem #:frugal-uuid/non-frugal/name-based
   :depends-on (#:frugal-uuid
                #:babel
-               #:bordeaux-threads
-               #:ironclad/prngs
                #:ironclad/digest/md5
                #:ironclad/digest/sha1)
-  :components ((:file "non-frugal")))
+  :components ((:file "non-frugal/name-based")))
+
+(asdf:defsystem #:frugal-uuid/non-frugal
+  :depends-on (#:frugal-uuid/non-frugal/strong-random
+               #:frugal-uuid/non-frugal/thread-safe
+               #:frugal-uuid/non-frugal/name-based))
 
 (asdf:defsystem #:frugal-uuid/benchmark
   :depends-on (#:frugal-uuid

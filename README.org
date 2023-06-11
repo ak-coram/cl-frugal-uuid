@@ -89,15 +89,16 @@ distribution:
 
 The above system is provided to conveniently setup the following:
 
-- Use Ironclad PRNG to generate strong random numbers.
-- Automatically use a new PRNG for each new thread (via
-  bordeaux-threads).
-- Randomize node ID and clock sequence for generating version 1 UUIDs
-  for each new thread (via bordeaux-threads).
-- Define the MAKE-V3 and MAKE-V5 functions relying on the babel and
+- Use Ironclad PRNG to generate [[https://github.com/ak-coram/cl-frugal-uuid/blob/main/non-frugal/strong-random.lisp][strong random numbers]].
+- Automatically use a new PRNG and randomize node ID & clock sequence
+  for generating version 1 UUIDs for each new thread (via
+  [[https://github.com/ak-coram/cl-frugal-uuid/blob/main/non-frugal/thread-safe.lisp][bordeaux-threads]]).
+- Define the [[https://github.com/ak-coram/cl-frugal-uuid/blob/main/non-frugal/name-based.lisp][MAKE-V3 and MAKE-V5 functions]] relying on the babel and
   Ironclad libraries.
 
-See [[https://github.com/ak-coram/cl-frugal-uuid/blob/main/non-frugal.lisp][non-frugal.lisp]] for details.
+:frugal-uuid/non-frugal is composed of multiple systems which can also
+be loaded individually if you only require parts of the above. See
+[[https://github.com/ak-coram/cl-frugal-uuid/blob/main/frugal-uuid.asd][frugal-uuid.asd]] for details.
 
 ** UUID Versions
 
