@@ -28,6 +28,19 @@
       (is (stringp s))
       (is (fuuid:uuid= uuid (fuuid:from-string s))))))
 
+(test octet-conversion
+  (let ((nil-octets (make-array '(16)
+                                :element-type '(unsigned-byte 8)
+                                :initial-element 0)))
+    (is (equalp nil-octets (fuuid:to-octets (fuuid:make-nil))))
+    (is (fuuid:uuid= (fuuid:make-nil)
+                     (fuuid:from-octets nil-octets)))
+    (dotimes (_ 20)
+      (let* ((uuid (fuuid:make-v4))
+             (octets (fuuid:to-octets uuid)))
+        (is (vectorp octets))
+        (is (fuuid:uuid= uuid (fuuid:from-octets octets)))))))
+
 (test equality
   (is (fuuid:uuid= (fuuid:make-nil) (fuuid:make-nil)))
   (is (fuuid:uuid-equal-p nil nil))
@@ -35,14 +48,22 @@
   (is (not (fuuid:uuid= (fuuid:make-v1) (fuuid:make-v4))))
   (dotimes (_ 5)
     (let* ((uuid (fuuid:make-v4))
-           (s (fuuid:to-string uuid))
-           (i (fuuid:to-integer uuid)))
-      (is (fuuid:uuid-equal-p uuid s))
-      (is (fuuid:uuid-equal-p s uuid))
-      (is (fuuid:uuid-equal-p uuid uuid))
-      (is (fuuid:uuid-equal-p i (fuuid:to-string uuid)))
-      (is (fuuid:uuid-equal-p (fuuid:to-string uuid) i))
-      (is (fuuid:uuid-equal-p i i))))
+           (fns `((,#'identity . ,#'identity)
+                  (,#'fuuid:to-integer . ,#'fuuid:from-integer)
+                  (,#'fuuid:to-string . ,#'fuuid:from-string)
+                  (,#'fuuid:to-octets . ,#'fuuid:from-octets)))
+           (values (loop :with values := nil
+                         :for (to-fn . from-fn) :in fns
+                         :for v := (funcall to-fn uuid)
+                         :do (push v values)
+                         :do (push (funcall from-fn v) values)
+                         :finally (return values))))
+      (is (eql (* (length values)
+                  (length values))
+               (loop :for a :in values
+                     :sum (loop :for b :in values
+                                :count (and (fuuid:uuid-equal-p a b)
+                                            (fuuid:uuid-equal-p b a))))))))
   (is (loop :with uuids := '("00000000-0000-0000-0000-000000000000"
                              "ef4c23eb-1fc0-4216-981d-9e24d512d9f4"
                              "3dbbd860-a35c-47df-8952-7604398ad84c"

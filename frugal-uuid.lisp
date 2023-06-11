@@ -150,16 +150,18 @@ Only accepts inputs of type uuid."
 (defun uuid-equal-p (x y)
   "Loosely compares inputs representing UUIDs.
 
-In addition to values of type uuid, it accepts the canonical string or
-an integer representation of UUIDs."
+In addition to values of type uuid, it accepts the canonical string,
+an integer representation of UUIDs or a vector of octets."
   (or (eq x y)
       (and x y
            (let ((x (typecase x
                       (string (from-string x))
                       (integer (from-integer x))
+                      ((simple-array (unsigned-byte 8)) (from-octets x))
                       (t x)))
                  (y (typecase y
                       (string (from-string y))
                       (integer (from-integer y))
+                      ((simple-array (unsigned-byte 8)) (from-octets y))
                       (t y))))
              (uuid= x y)))))
