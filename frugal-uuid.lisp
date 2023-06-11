@@ -78,7 +78,7 @@
           (clock-seq-low uuid)
           (node uuid)))
 
-(declaim (ftype (function (integer) (simple-array (unsigned-byte 8))) 
+(declaim (ftype (function (integer) (simple-array (unsigned-byte 8)))
                 integer-to-octets))
 (defun integer-to-octets (i)
   (loop :with octets := (make-array '(16) :element-type '(unsigned-byte 8))
@@ -94,7 +94,7 @@
   (loop :with i := 0
         :for octet-index :below 16
         :for bit-index := (* (- 15 octet-index) 8)
-        :do (setf (ldb (byte 8 bit-index) i) 
+        :do (setf (ldb (byte 8 bit-index) i)
                   (aref octets octet-index))
         :finally (return i)))
 
