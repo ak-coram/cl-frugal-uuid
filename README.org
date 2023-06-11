@@ -68,6 +68,10 @@ distribution:
   (fuuid:from-string "0909e4f4-8333-4712-8609-5ae02d735772")
   ;; => #<FRUGAL-UUID:UUID 0909e4f4-8333-4712-8609-5ae02d735772>
 
+  ;; Convert UUID to octets
+  (fuuid:to-octets (fuuid:make-v4))
+  ;; => #(33 194 68 252 59 137 78 19 177 22 25 166 226 241 44 55)
+
   ;; Compare two random UUID values
   (fuuid:uuid= (fuuid:make-v4) (fuuid:make-v4)) ; => NIL
 
