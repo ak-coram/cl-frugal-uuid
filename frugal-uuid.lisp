@@ -32,6 +32,7 @@
          :documentation "48-bit node ID"))
   (:documentation "Represent UUID values as defined in RFC 4122"))
 
+(declaim (ftype (function (integer) (values uuid &optional)) from-integer))
 (defun from-integer (i)
   "Create uuid value from integer representation."
   (make-instance 'uuid
@@ -42,6 +43,7 @@
                  :clock-seq-low (ldb (byte 8 48) i)
                  :node (ldb (byte 48 0) i)))
 
+(declaim (ftype (function (uuid) integer) to-integer))
 (defun to-integer (uuid)
   "Convert uuid value to integer representation."
   (let ((i 0))
@@ -53,6 +55,7 @@
           (ldb (byte 48 0) i) (node uuid))
     i))
 
+(declaim (ftype (function (string) uuid) from-string))
 (defun from-string (s)
   "Parse uuid value from canonical textual representation."
   (unless (eql (length s) 36)
@@ -64,6 +67,7 @@
       :do (error "UUID parse error: expected - at index ~a, found ~a instead." i c))
   (from-integer (parse-integer (remove #\- s) :radix 16)))
 
+(declaim (ftype (function (uuid) string) to-string))
 (defun to-string (uuid)
   "Convert uuid value into canonical textual representation."
   (format nil "~(~8,'0x-~4,'0x-~4,'0x-~2,'0x~2,'0x-~12,'0x~)"
@@ -78,6 +82,7 @@
   (print-unreadable-object (uuid stream :type t)
     (format stream (to-string uuid))))
 
+(declaim (ftype (function () (values uuid &optional)) make-nil))
 (defun make-nil ()
   "Create uuid value with all bits set to zero."
   (make-instance 'uuid
@@ -88,6 +93,7 @@
                  :clock-seq-low 0
                  :node 0))
 
+(declaim (ftype (function () (values uuid &optional)) make-omni))
 (defun make-omni ()
   "Create uuid value with all bits set to one."
   (make-instance 'uuid
@@ -114,14 +120,16 @@ Only accepts inputs of type uuid."
 (defun uuid-equal-p (x y)
   "Loosely compares inputs representing UUIDs.
 
-In addition to values of type uuid, it accepts the canonical UUID
-string representation."
+In addition to values of type uuid, it accepts the canonical string or
+an integer representation of UUIDs."
   (or (eq x y)
       (and x y
-           (let ((x (if (stringp x)
-                        (from-string x)
-                        x))
-                 (y (if (stringp y)
-                        (from-string y)
-                        y)))
+           (let ((x (typecase x
+                      (string (from-string x))
+                      (integer (from-integer x))
+                      (t x)))
+                 (y (typecase y
+                      (string (from-string y))
+                      (integer (from-integer y))
+                      (t y))))
              (uuid= x y)))))

@@ -31,6 +31,8 @@ argument."
          (*random-number-function* ,random-number-function))
      ,@body))
 
+(declaim (ftype (function (integer) (values integer &optional))
+                random-integer))
 (defun random-integer (limit)
   "Generate a non-negative random number below LIMIT.
 

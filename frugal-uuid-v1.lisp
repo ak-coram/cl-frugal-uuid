@@ -30,6 +30,8 @@
   `(let ((*v1-generator* ,v1-generator))
      ,@body))
 
+(declaim (ftype (function (integer) (values uuid &optional))
+                make-v1-from-timestamp))
 (defun make-v1-from-timestamp (timestamp)
   (unless *v1-generator* (initialize-v1-generator))
   (let ((clock-seq (v1-clock-seq *v1-generator*))
@@ -47,6 +49,7 @@
                    :clock-seq-low (ldb (byte 8 0) clock-seq)
                    :node (v1-node-id *v1-generator*))))
 
+(declaim (ftype (function () (values uuid &optional)) make-v1))
 (defun make-v1 ()
   "Generate uuid value (version 1)."
   (unless *v1-generator* (initialize-v1-generator))

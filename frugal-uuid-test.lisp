@@ -33,13 +33,16 @@
   (is (fuuid:uuid-equal-p nil nil))
   (is (not (fuuid:uuid-equal-p nil (fuuid:make-nil))))
   (is (not (fuuid:uuid= (fuuid:make-v1) (fuuid:make-v4))))
-  (dotimes (_ 10)
+  (dotimes (_ 5)
     (let* ((uuid (fuuid:make-v4))
-           (s (fuuid:to-string uuid)))
+           (s (fuuid:to-string uuid))
+           (i (fuuid:to-integer uuid)))
       (is (fuuid:uuid-equal-p uuid s))
       (is (fuuid:uuid-equal-p s uuid))
       (is (fuuid:uuid-equal-p uuid uuid))
-      (is (fuuid:uuid-equal-p s (fuuid:to-string uuid)))))
+      (is (fuuid:uuid-equal-p i (fuuid:to-string uuid)))
+      (is (fuuid:uuid-equal-p (fuuid:to-string uuid) i))
+      (is (fuuid:uuid-equal-p i i))))
   (is (loop :with uuids := '("00000000-0000-0000-0000-000000000000"
                              "ef4c23eb-1fc0-4216-981d-9e24d512d9f4"
                              "3dbbd860-a35c-47df-8952-7604398ad84c"
