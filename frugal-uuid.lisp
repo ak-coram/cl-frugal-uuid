@@ -184,8 +184,6 @@ an integer representation of UUIDs or a vector of octets."
 (defmacro ~ (&rest uuid-literals)
   (if (null uuid-literals)
       (compile-literal (make-v4))
-      `(values
-        ,@(loop :for uuid-literal :in uuid-literals
-                :collect (compile-literal uuid-literal)))))
+      `(values ,@(mapcar #'compile-literal uuid-literals))))
 
 
