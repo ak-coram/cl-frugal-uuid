@@ -84,6 +84,29 @@ distribution:
    "0909e4f4-8333-4712-8609-5ae02d735772") ; => T
 #+end_src
 
+** Embedding UUIDs
+
+You can efficiently embed UUID literals in your source using the ~
+macro:
+
+#+begin_src lisp
+  (fuuid:~ 1d2f8148-c30c-4f9d-8aae-2ac5807000dc)
+  ;; => #<FRUGAL-UUID:UUID 1d2f8148-c30c-4f9d-8aae-2ac5807000dc>
+
+  (multiple-value-list (fuuid:~ 1d2f8148-c30c-4f9d-8aae-2ac5807000dc
+                                fa23520b-972c-4f84-b5bf-91f0d7d4f4b4))
+  ;; => (#<FRUGAL-UUID:UUID 1d2f8148-c30c-4f9d-8aae-2ac5807000dc>
+  ;;     #<FRUGAL-UUID:UUID fa23520b-972c-4f84-b5bf-91f0d7d4f4b4>)
+
+  ;; When called without arguments, the macro generates a random
+  ;; value during expansion (via MAKE-V4):
+  (fuuid:~)
+  ;; => #<FRUGAL-UUID:UUID f890220f-0a9d-4380-80ce-f88d59619480>
+#+end_src
+
+For writing your own macros, you can rely on the COMPILE-LITERAL
+function.
+
 ** non-frugal setup
 
 #+begin_src lisp
@@ -198,7 +221,7 @@ relies on OpenSSL:
 
 #+begin_src lisp
   ;; Dynamically bind random number generator:
-  (fuuid:with-random-number-generator (make-random-state t)
+pppppp  (fuuid:with-random-number-generator (make-random-state t)
     (fuuid:make-v4))
 
   ;; Dynamically bind both random number generator & random function:

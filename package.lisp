@@ -14,6 +14,8 @@
            #:make-omni
            #:uuid=
            #:uuid-equal-p
+           #:compile-literal
+           #:~
 
            ;; Randomness
            #:*random-number-generator*
@@ -31,10 +33,6 @@
            #:parse-node-id
 
            ;; Namespace
-           #:+ns-url+
-           #:+ns-dns+
-           #:+ns-oid+
-           #:+ns-x500+
            #:*ns-url*
            #:*ns-dns*
            #:*ns-oid*

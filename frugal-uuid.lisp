@@ -165,3 +165,27 @@ an integer representation of UUIDs or a vector of octets."
                       ((simple-array (unsigned-byte 8)) (from-octets y))
                       (t y))))
              (uuid= x y)))))
+
+(defun compile-literal (uuid-literal)
+  (let ((uuid (typecase uuid-literal
+                (uuid uuid-literal)
+                (string (from-string uuid-literal))
+                (integer (from-integer uuid-literal))
+                ((simple-array (unsigned-byte 8)) (from-octets uuid-literal))
+                (t (from-string (format nil "~a" uuid-literal))))))
+    `(make-instance 'uuid
+                    :time-low ,(time-low uuid)
+                    :time-mid ,(time-mid uuid)
+                    :time-hi-and-version ,(time-hi-and-version uuid)
+                    :clock-seq-hi-and-res ,(clock-seq-hi-and-res uuid)
+                    :clock-seq-low ,(clock-seq-low uuid)
+                    :node ,(node uuid))))
+
+(defmacro ~ (&rest uuid-literals)
+  (if (null uuid-literals)
+      (compile-literal (make-v4))
+      `(values
+        ,@(loop :for uuid-literal :in uuid-literals
+                :collect (compile-literal uuid-literal)))))
+
+
