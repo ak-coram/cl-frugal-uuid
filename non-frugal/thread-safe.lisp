@@ -5,7 +5,8 @@
 ;; Setup new PRNG for each new thread
 #+thread-support
 (pushnew '(*random-number-generator* .
-           (funcall *random-number-generator-init-function*))
+           (when *random-number-generator-init-function*
+             (funcall *random-number-generator-init-function*)))
          bt2:*default-special-bindings*
          :test #'equal)
 
