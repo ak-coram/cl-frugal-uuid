@@ -205,6 +205,10 @@ A setup using [[https://github.com/sharplispers/ironclad][Ironclad]]:
   ;; Setup with custom PRNG:
   (fuuid:initialize-random #'crypto:strong-random
                            (lambda () (ironclad:make-prng :os)))
+
+  ;; Dynamically bind the generator:
+  (fuuid:with-random-number-generator (ironclad:make-prng :os)
+    (fuuid:make-v4))
 #+end_src
 
 *** secure-random
@@ -216,20 +220,8 @@ relies on OpenSSL:
   ;; Load library for generating secure random numbers
   (ql:quickload :secure-random)
 
-  ;; Setup random number generator
-  (fuuid:initialize-random #'secure-random:number
-                           (lambda () secure-random:*generator*))
-#+end_src
-
-*** Dynamic binding
-
-#+begin_src lisp
-  ;; Dynamically bind random number generator:
-  (fuuid:with-random-number-generator (make-random-state t)
-    (fuuid:make-v4))
-
   ;; Dynamically bind both random number generator & random function:
-  (fuuid:with-random (#'random (make-random-state t))
+  (fuuid:with-random (#'secure-random:number secure-random:*generator*)
     (fuuid:make-v4))
 #+end_src
 
@@ -250,7 +242,7 @@ or on image startup (it will be reinitialized on first use):
 
 If you only load the systems in this project this should not be an
 issue as the global random state is initialized on first use (when
-generating UUID values of either version 1 or version 4.
+generating UUID values of either version 1 or version 4).
 
 ** Running tests
 
