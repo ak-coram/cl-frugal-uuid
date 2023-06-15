@@ -135,7 +135,10 @@ be loaded individually if you only require parts of the above. See
 
 Node ID and clock sequence are initialized randomly by default, but
 you can provide your own values (or even your own function for
-generating timestamp values) using MAKE-V1-GENERATOR.
+generating timestamp values) using MAKE-V1-GENERATOR. Currently
+there's no mechanism included in this library for determining the
+systems MAC address, but the PARSE-NODE-ID function is included for
+parsing it once obtained.
 
 To avoid repeated values, it is recommended for multithreaded
 applications to use a separate generator for each thread. This is
