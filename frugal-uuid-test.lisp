@@ -51,7 +51,8 @@
            (fns `((,#'identity . ,#'identity)
                   (,#'fuuid:to-integer . ,#'fuuid:from-integer)
                   (,#'fuuid:to-string . ,#'fuuid:from-string)
-                  (,#'fuuid:to-octets . ,#'fuuid:from-octets)))
+                  (,#'fuuid:to-octets . ,#'fuuid:from-octets)
+                  (,#'fuuid:to-sym . ,#'fuuid:from-sym)))
            (values (loop :with values := nil
                          :for (to-fn . from-fn) :in fns
                          :for v := (funcall to-fn uuid)

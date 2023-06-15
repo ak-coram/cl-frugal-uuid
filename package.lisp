@@ -10,6 +10,8 @@
            #:to-string
            #:from-octets
            #:to-octets
+           #:from-sym
+           #:to-sym
            #:make-nil
            #:make-omni
            #:uuid=

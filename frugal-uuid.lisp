@@ -108,6 +108,16 @@
   "Create uuid value from a vector of octets."
   (from-integer (octets-to-integer octets)))
 
+(declaim (ftype (function (uuid) symbol) to-sym))
+(defun to-sym (uuid)
+  "Create a symbol (uppercase) from uuid value."
+  (make-symbol (string-upcase (to-string uuid))))
+
+(declaim (ftype (function (symbol) uuid) from-sym))
+(defun from-sym (sym)
+  "Create uuid value from a symbol."
+  (from-string (format nil "~a" sym)))
+
 (defmethod print-object ((uuid uuid) stream)
   (print-unreadable-object (uuid stream :type t)
     (format stream (to-string uuid))))
@@ -150,19 +160,21 @@ Only accepts inputs of type uuid."
 (defun uuid-equal-p (x y)
   "Loosely compares inputs representing UUIDs.
 
-In addition to values of type uuid, it accepts the canonical string,
-an integer representation of UUIDs or a vector of octets."
+In addition to values of type uuid, it accepts symbols or strings with
+the canonical textual representation, integers and vectors of octets."
   (or (eq x y)
       (and x y
            (let ((x (typecase x
                       (string (from-string x))
                       (integer (from-integer x))
                       ((simple-array (unsigned-byte 8)) (from-octets x))
+                      (symbol (from-sym x))
                       (t x)))
                  (y (typecase y
                       (string (from-string y))
                       (integer (from-integer y))
                       ((simple-array (unsigned-byte 8)) (from-octets y))
+                      (symbol (from-sym y))
                       (t y))))
              (uuid= x y)))))
 
@@ -172,6 +184,7 @@ an integer representation of UUIDs or a vector of octets."
                 (string (from-string uuid-literal))
                 (integer (from-integer uuid-literal))
                 ((simple-array (unsigned-byte 8)) (from-octets uuid-literal))
+                (symbol (from-sym uuid-literal))
                 (t (from-string (format nil "~a" uuid-literal))))))
     `(make-instance 'uuid
                     :time-low ,(time-low uuid)
