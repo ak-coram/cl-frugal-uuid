@@ -244,6 +244,49 @@ If you only load the systems in this project this should not be an
 issue as the global random state is initialized on first use (when
 generating UUID values of either version 1 or version 4).
 
+Here's an example session illustrating the issue:
+
+#+begin_src
+  $ sbcl
+
+  * (ql:quickload :frugal-uuid)
+  To load "frugal-uuid":
+    Load 1 ASDF system:
+      frugal-uuid
+  ; Loading "frugal-uuid"
+  (:FRUGAL-UUID)
+
+  * (fuuid:make-v4)
+  #<FRUGAL-UUID:UUID 88d17bef-3541-4660-b7fe-ecc588778311>
+
+  * (ql:quickload :trivial-dump-core)
+  To load "trivial-dump-core":
+    Load 1 ASDF system:
+      trivial-dump-core
+  ; Loading "trivial-dump-core"
+
+  (:TRIVIAL-DUMP-CORE)
+
+  * (trivial-dump-core:save-executable
+     "echo-random-uuid"
+     (lambda () (format t "~a~%" (fuuid:to-string (fuuid:make-v4)))))
+  [undoing binding stack and other enclosing state... done]
+  [performing final GC... done]
+  [defragmenting immobile space... (inst,fdefn,code,sym)=959+18456+19452+26866... done]
+  [saving current Lisp image into echo-random-uuid:
+  writing 3376 bytes from the static space at 0x50000000
+  writing 21266432 bytes from the dynamic space at 0x1000000000
+  writing 7443312 bytes from the read-only space at 0xfff8e0000
+  writing 2015232 bytes from the fixedobj space at 0x50100000
+  writing 11993088 bytes from the text space at 0x52a00000
+  done]
+
+  $ ./echo-random-uuid
+  cb09eb20-64c6-4ed0-b5be-c89388a673fe
+  $ ./echo-random-uuid
+  cb09eb20-64c6-4ed0-b5be-c89388a673fe
+#+end_src
+
 ** Running tests
 
 - Load the tests via Quicklisp:
