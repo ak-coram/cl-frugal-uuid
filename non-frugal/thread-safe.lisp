@@ -4,11 +4,8 @@
 
 ;; Setup new PRNG for each new thread
 #+thread-support
-(pushnew '(*random-number-generator* . (ironclad:make-prng :os))
-         bt2:*default-special-bindings*
-         :test #'equal)
-#+thread-support
-(pushnew '(*random-number-function* . #'crypto:strong-random)
+(pushnew '(*random-number-generator* .
+           (funcall *random-number-generator-init-function*))
          bt2:*default-special-bindings*
          :test #'equal)
 

@@ -32,6 +32,9 @@ numbers is strongly recommended in order to reduce the probability of
 repeated values. Please see the section on randomness in this README
 for setting up an alternative source of random numbers.
 
+Please also see [[https://github.com/ak-coram/cl-frugal-uuid#Saving-a-Lisp-image][this section]] of the README if you intend on saving
+your program as a Lisp image.
+
 You can also use the [[https://github.com/ak-coram/cl-frugal-uuid#non-frugal-setup][frugal-uuid/non-frugal]] system to change the
 defaults and provide support for generating name-based UUIDs (versions
 3 and 5). This should only be necessary if you intend to securely
@@ -135,11 +138,12 @@ you can provide your own values (or even your own function for
 generating timestamp values) using MAKE-V1-GENERATOR.
 
 To avoid repeated values, it is recommended for multithreaded
-applications to use a separate generator for each thread. Please also
-see the section on randomness for setting up alternative sources for
-random numbers.
+applications to use a separate generator for each thread. This is
+automatically done using bordeaux-threads if you use the
+frugal-uuid/non-frugal system.
 
- For example:
+Please also see the section on randomness for setting up alternative
+sources for random numbers.
 
 #+begin_src lisp
   (bordeaux-threads-2:make-thread
@@ -200,7 +204,7 @@ A setup using [[https://github.com/sharplispers/ironclad][Ironclad]]:
 
   ;; Setup with custom PRNG:
   (fuuid:initialize-random #'crypto:strong-random
-                           (ironclad:make-prng :os))
+                           (lambda () (ironclad:make-prng :os)))
 #+end_src
 
 *** secure-random
@@ -214,20 +218,39 @@ relies on OpenSSL:
 
   ;; Setup random number generator
   (fuuid:initialize-random #'secure-random:number
-                           secure-random:*generator*)
+                           (lambda () secure-random:*generator*))
 #+end_src
 
 *** Dynamic binding
 
 #+begin_src lisp
   ;; Dynamically bind random number generator:
-pppppp  (fuuid:with-random-number-generator (make-random-state t)
+  (fuuid:with-random-number-generator (make-random-state t)
     (fuuid:make-v4))
 
   ;; Dynamically bind both random number generator & random function:
   (fuuid:with-random (#'random (make-random-state t))
     (fuuid:make-v4))
 #+end_src
+
+*** Saving a Lisp image
+
+If you generate UUID values while building your Lisp image, it can
+include global random state which already has been initialized. This
+would mean that executing the image multiple times could lead to
+generating repeated UUID values.
+
+To avoid this, you can clear the global state before saving your image
+or on image startup (it will be reinitialized on first use):
+
+#+begin_src lisp
+  (setf fuuid:*random-number-generator* nil
+        fuuid:*v1-generator* nil)
+#+end_src
+
+If you only load the systems in this project this should not be an
+issue as the global random state is initialized on first use (when
+generating UUID values of either version 1 or version 4.
 
 ** Running tests
 

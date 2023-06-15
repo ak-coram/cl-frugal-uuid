@@ -21,6 +21,7 @@
 
            ;; Randomness
            #:*random-number-generator*
+           #:*random-number-generator-init-function*
            #:*random-number-function*
            #:initialize-random
            #:with-random
