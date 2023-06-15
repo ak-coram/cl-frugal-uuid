@@ -30,8 +30,7 @@
   :components ((:file "non-frugal/strong-random")))
 
 (asdf:defsystem #:frugal-uuid/non-frugal/thread-safe
-  :depends-on (#:frugal-uuid/non-frugal/strong-random
-               #:bordeaux-threads)
+  :depends-on (#:bordeaux-threads)
   :components ((:file "non-frugal/thread-safe")))
 
 (asdf:defsystem #:frugal-uuid/non-frugal/name-based
