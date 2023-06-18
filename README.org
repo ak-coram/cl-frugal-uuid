@@ -1,4 +1,4 @@
-* cl-frugal-uuid (WiP)
+* cl-frugal-uuid
 
 #+begin_html
 <div align="center">
