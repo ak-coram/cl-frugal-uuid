@@ -197,7 +197,7 @@ thread-safety if you intend to use this in a multi-threaded program.
 
 *** Ironclad
 
-A setup using [[https://github.com/sharplispers/ironclad][Ironclad]]:
+A setup using [[https://github.com/sharplispers/ironclad#pseudo-random-number-generation][Ironclad PRNG]]:
 
 #+begin_src lisp
   (ql:quickload :ironclad/prngs)
