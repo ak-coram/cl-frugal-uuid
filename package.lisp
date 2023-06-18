@@ -4,6 +4,12 @@
   (:nicknames #:fuuid)
   (:use #:cl)
   (:export #:uuid
+           #:time-low
+           #:time-mid
+           #:time-hi-and-version
+           #:clock-seq-hi-and-res
+           #:clock-seq-low
+           #:node
            #:from-integer
            #:to-integer
            #:from-string
