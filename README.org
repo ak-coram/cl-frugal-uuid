@@ -119,6 +119,11 @@ function.
 The above system is provided to conveniently setup the following:
 
 - Use Ironclad PRNG to generate [[https://github.com/ak-coram/cl-frugal-uuid/blob/main/non-frugal/strong-random.lisp][strong random numbers]].
+- Use [[https://github.com/ak-coram/cl-trivial-clock][cl-trivial-clock]] to generate more accurate timestamps by relying
+  on platform-specific functionality (warning: the default
+  implementation has better uniqueness properties by simply using the
+  subsecond bits of the timestamp as a counter and sleeping when the
+  possible ten million values are exhausted).
 - Automatically use a new PRNG and randomize node ID & clock sequence
   for generating version 1 UUIDs for each new thread (via
   [[https://github.com/ak-coram/cl-frugal-uuid/blob/main/non-frugal/thread-safe.lisp][bordeaux-threads]]).

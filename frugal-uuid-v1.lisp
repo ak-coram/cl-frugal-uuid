@@ -12,8 +12,6 @@
    (timestamp-generator :initarg :v1-timestamp-generator
                         :accessor v1-timestamp-generator)))
 
-(defvar *v1-generator* nil)
-
 (defun make-v1-generator (&key node-id clock-seq timestamp-generator)
   (make-instance 'v1-generator
                  :v1-node-id (or node-id (random-node-id))
@@ -21,8 +19,12 @@
                  :v1-timestamp-generator (or timestamp-generator
                                              (make-timestamp-generator))))
 
+(defvar *v1-generator* nil)
+(defvar *v1-generator-init-function* #'make-v1-generator)
+
 (defun initialize-v1-generator (&optional v1-generator)
-  (setf *v1-generator* (or v1-generator (make-v1-generator)))
+  (setf *v1-generator* (or v1-generator
+                           (funcall *v1-generator-init-function*)))
   nil)
 
 (defmacro with-v1-generator (v1-generator &body body)
@@ -54,4 +56,3 @@
   "Generate uuid value (version 1)."
   (unless *v1-generator* (initialize-v1-generator))
   (make-v1-from-timestamp (funcall (v1-timestamp-generator *v1-generator*))))
-

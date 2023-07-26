@@ -49,7 +49,9 @@
 
            ;; Version 1
            #:*v1-generator*
+           #:*v1-generator-init-function*
            #:make-v1-generator
+           #:make-accurate-v1-generator
            #:initialize-v1-generator
            #:with-v1-generator
            #:make-v1-from-timestamp

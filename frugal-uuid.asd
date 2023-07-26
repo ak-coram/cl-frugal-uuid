@@ -41,10 +41,16 @@
                #:ironclad/digest/sha1)
   :components ((:file "non-frugal/name-based")))
 
+(asdf:defsystem #:frugal-uuid/non-frugal/accurate-clock
+  :depends-on (#:frugal-uuid
+               #:trivial-clock)
+  :components ((:file "non-frugal/accurate-clock")))
+
 (asdf:defsystem #:frugal-uuid/non-frugal
   :depends-on (#:frugal-uuid/non-frugal/strong-random
                #:frugal-uuid/non-frugal/thread-safe
-               #:frugal-uuid/non-frugal/name-based))
+               #:frugal-uuid/non-frugal/name-based
+               #:frugal-uuid/non-frugal/accurate-clock))
 
 (asdf:defsystem #:frugal-uuid/benchmark
   :depends-on (#:frugal-uuid
