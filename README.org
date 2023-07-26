@@ -193,6 +193,19 @@ generate name-based (version 3 or version 5) UUIDs:
   ;; => #<FRUGAL-UUID:UUID dd4d48d9-d46b-58a0-977e-e9e5e20a6e9c>
 #+end_src
 
+*** Version 6 (based on IETF draft)
+
+The implementation first generates a version 1 UUID (see above) and
+reorders the timestamp fields to create a version 6 UUID value. Please
+note that the slot accessors for the UUID class (TIME-LOW, TIME-MID
+and TIME-HI-AND-VERSION) are based on RFC 4122 and do not match the
+timestamp part names used for version 6. Please rely on the following
+functions instead:
+
+- V6-TIME-LOW-AND-VERSION
+- V6-TIME-MID
+- V6-TIME-HIGH
+
 ** Randomness
 
 If you have an alternative source of random numbers, you can use it

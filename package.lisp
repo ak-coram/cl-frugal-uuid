@@ -71,4 +71,11 @@
            ;; Version 5
            #:make-v5-from-integer
            #:make-v5-from-octets
-           #:make-v5))
+           #:make-v5
+
+           ;; Version 6 (IETF draft)
+           #:v6-time-hi
+           #:v6-time-mid
+           #:v6-time-low-and-version
+           #:make-v6-from-v1
+           #:make-v6))
