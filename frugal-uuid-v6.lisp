@@ -57,7 +57,7 @@
 
 (declaim (ftype (function () (values uuid &optional)) make-v6))
 (defun make-v6 ()
-  "Generate uuid value (version 6)
+  "Generate uuid value (version 6).
 
  Implementation is based on generating a version 1 uuid value and
  reordering the timestamp. See frugal-uuid-v1.lisp for details."

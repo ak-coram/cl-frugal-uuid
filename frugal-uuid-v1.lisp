@@ -35,7 +35,6 @@
 (declaim (ftype (function (integer) (values uuid &optional))
                 make-v1-from-timestamp))
 (defun make-v1-from-timestamp (timestamp)
-  (unless *v1-generator* (initialize-v1-generator))
   (let ((clock-seq (v1-clock-seq *v1-generator*))
         (clock-seq-high #xFF)
         (time-high-and-version #xFFFF))
@@ -55,4 +54,17 @@
 (defun make-v1 ()
   "Generate uuid value (version 1)."
   (unless *v1-generator* (initialize-v1-generator))
-  (make-v1-from-timestamp (funcall (v1-timestamp-generator *v1-generator*))))
+  (multiple-value-bind (base fraction repetitions)
+      (funcall (v1-timestamp-generator *v1-generator*))
+    ;; Change clock-seq when necessary
+    (when (or
+           ;; Time went backwards
+           (null repetitions)
+           ;; Ran out of unique values
+           (and (plusp repetitions)
+                (or fraction
+                    (zerop (mod repetitions +100nanos-per-second+)))))
+      (setf (v1-clock-seq *v1-generator*)
+            (mod (1+ (v1-clock-seq *v1-generator*)) #b11111111111111)))
+    (make-v1-from-timestamp
+     (+ (* base +100nanos-per-second+) (or fraction repetitions)))))

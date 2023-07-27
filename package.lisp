@@ -34,6 +34,7 @@
            #:with-random-number-generator
 
            ;; Clock
+           #:*unix-timestamp-function*
            #:random-clock-seq
            #:make-timestamp-generator
 
