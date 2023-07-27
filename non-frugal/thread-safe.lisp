@@ -16,3 +16,8 @@
          bt2:*default-special-bindings*
          :test #'equal)
 
+;; Setup new version 7 generator for each new thread
+#+thread-support
+(pushnew '(*v7-generator* . (make-v7-generator))
+         bt2:*default-special-bindings*
+         :test #'equal)

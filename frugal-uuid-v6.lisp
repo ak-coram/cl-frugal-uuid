@@ -3,7 +3,7 @@
 (in-package #:frugal-uuid)
 
 ;; Based on IETF draft:
-;; https://www.ietf.org/archive/id/draft-peabody-dispatch-new-uuid-format-01.html
+;; https://www.ietf.org/archive/id/draft-peabody-dispatch-new-uuid-format-04.html
 
 (declaim (ftype (function (uuid) (values uuid &optional))
                 make-v6-from-v1))

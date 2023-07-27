@@ -52,7 +52,6 @@
            #:*v1-generator*
            #:*v1-generator-init-function*
            #:make-v1-generator
-           #:make-accurate-v1-generator
            #:initialize-v1-generator
            #:with-v1-generator
            #:make-v1-from-timestamp
@@ -79,4 +78,13 @@
            #:v6-time-mid
            #:v6-time-low-and-version
            #:make-v6-from-v1
-           #:make-v6))
+           #:make-v6
+
+           ;; Version 7 (IETF draft)
+           #:*v7-generator*
+           #:*v7-generator-init-function*
+           #:make-v7-generator
+           #:initialize-v7-generator
+           #:with-v7-generator
+           #:make-v7-from-timestamp
+           #:make-v7))

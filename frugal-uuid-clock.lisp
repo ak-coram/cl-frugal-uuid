@@ -2,7 +2,9 @@
 
 (in-package #:frugal-uuid)
 
+(defconstant +millis-per-second+ 1000)
 (defconstant +nanos-per-second+ 1000000000)
+(defconstant +nanos-per-milli+ 1000000)
 (defconstant +100nanos-per-second+ (/ +nanos-per-second+ 100))
 
 (defconstant +unix-time-uuid-epoch-offset-seconds+ 12219292800)
