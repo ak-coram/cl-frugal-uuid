@@ -63,8 +63,10 @@
            ;; Ran out of unique values
            (and (plusp repetitions)
                 (or fraction
-                    (zerop (mod repetitions +100nanos-per-second+)))))
+                    (<= +100nanos-per-second+ repetitions))))
       (setf (v1-clock-seq *v1-generator*)
             (mod (1+ (v1-clock-seq *v1-generator*)) #b11111111111111)))
     (make-v1-from-timestamp
-     (+ (* base +100nanos-per-second+) (or fraction repetitions)))))
+     (+ (* base +100nanos-per-second+)
+        (or fraction
+            (min repetitions (1- +100nanos-per-second+)))))))
