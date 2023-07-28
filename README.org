@@ -22,9 +22,6 @@ Common Lisp [[https://en.wikipedia.org/wiki/Universally_unique_identifier][UUID]
 
 ** Limitations
 
-Currently only generating timestamp based UUIDs (Version 1) and random
-UUIDs (Version 4) is supported.
-
 Please note that by default the implementation dependent built-in CL
 random number generator is used, which might not be of sufficient
 quality for your purposes. The use of cryptographic-quality random
@@ -256,7 +253,7 @@ The random component may also be used for encoding custom data.
 The Common Lisp standard only provides a function to retrieve the
 current wall-clock time as a number of whole seconds elapsed since the
 Common Lisp epoch. In order to make use of the subsecond bits of the
-timestamp, values in version 1 and 7 UUIDs the default implementation
+timestamp (in UUID versions 1, 6 and 7), the default implementation
 uses them as a counter which is incremented when generating subsequent
 UUID values within the same clock tick. If the number of unique values
 is exhausted the clock sequence is updated and this counter wraps
@@ -264,8 +261,6 @@ around to 0.
 
 Within the frugal-uuid/non-frugal system a more accurate clock is
 available and the above doesn't apply.
-
-**
 
 ** Randomness
 
