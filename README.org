@@ -42,6 +42,9 @@ generate new UUIDs via this library: for representing existing UUIDs
 (parsing, comparing and converting values) relying on the frugal-uuid
 system should be sufficient.
 
+UUID versions above version 5 are based on version 04 of the [[https://www.ietf.org/archive/id/draft-peabody-dispatch-new-uuid-format-04.txt][IETF
+draft]] and should be considered experimental.
+
 The following implementations and operating systems are tested via [[https://github.com/ak-coram/cl-frugal-uuid/blob/main/.github/workflows/CI.yml][CI]]:
 
 - [[https://sbcl.org/][SBCL]] (Linux, Windows, macOS)
@@ -205,8 +208,9 @@ functions instead:
 
 *** Version 7 (based on IETF draft)
 
-A 48 bit unix timestamp (milliseconds), a 18 bit counter and 56 bits
-of random data are used for generating version 7 UUID values.
+A 48 bit unix timestamp (milliseconds), a 18 bit counter (used as a
+clock sequence as in version 1) and 56 bits of random data are used
+for generating version 7 UUID values.
 
 ** Timestamps
 
