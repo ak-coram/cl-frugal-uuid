@@ -17,7 +17,8 @@
                (:file "frugal-uuid-v4")
                (:file "frugal-uuid-v5")
                (:file "frugal-uuid-v6")
-               (:file "frugal-uuid-v7"))
+               (:file "frugal-uuid-v7")
+               (:file "frugal-uuid-v8"))
   :in-order-to ((test-op (test-op "frugal-uuid/test"))))
 
 (asdf:defsystem #:frugal-uuid/test

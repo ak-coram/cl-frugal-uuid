@@ -87,4 +87,7 @@
            #:initialize-v7-generator
            #:with-v7-generator
            #:make-v7-from-timestamp
-           #:make-v7))
+           #:make-v7
+
+           ;; Version 8 (IETF draft)
+           #:make-v8))
