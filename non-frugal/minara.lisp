@@ -51,7 +51,7 @@
 (declaim (ftype (function (&optional (unsigned-byte 54)) uuid)
                 make-minara))
 (defun make-minara (&optional data)
-  "Generate uuid value (custom MiNaRa version based on version 8)."
+  "Generate custom MiNaRa uuid value (based on version 8)."
   (multiple-value-bind (seconds nanos) (funcall *unix-timestamp-function*)
     (multiple-value-bind (millis nanos) (floor nanos +nanos-per-milli+)
       (make-minara-from-components
