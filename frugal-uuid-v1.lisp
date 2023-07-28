@@ -34,11 +34,11 @@
   `(let ((*v1-generator* ,v1-generator))
      ,@body))
 
-(declaim (ftype (function (integer) (values uuid &optional))
+(declaim (ftype (function (integer (unsigned-byte 14))
+                          (values uuid &optional))
                 make-v1-from-timestamp))
-(defun make-v1-from-timestamp (timestamp)
-  (let ((clock-seq (v1-clock-seq *v1-generator*))
-        (clock-seq-high #xFF)
+(defun make-v1-from-timestamp (timestamp clock-seq)
+  (let ((clock-seq-high #xFF)
         (time-high-and-version #xFFFF))
     (setf (ldb (byte 2 6) clock-seq-high) #b10 ; Set variant to IETF
           (ldb (byte 6 0) clock-seq-high) (ldb (byte 6 8) clock-seq)
@@ -62,12 +62,18 @@
     (if (or (null repetitions)       ; Time went backwards
             (zerop repetitions))     ; New tick
         ;; Reinitialize with random value
-        (setf (v1-clock-seq *v1-generator*)
-              (random-clock-seq))
-        (when (or fraction
-                  (zerop (mod repetitions +100nanos-per-second+)))
-          ;; Ran out of unique values, increment
+        (setf (v1-clock-seq *v1-generator*) (random-clock-seq))
+        (when fraction
+          ;; Increment clock sequence
           (setf (v1-clock-seq *v1-generator*)
                 (mod (1+ (v1-clock-seq *v1-generator*)) +v1-clock-seq-max+))))
-    (make-v1-from-timestamp
-     (+ (* base +100nanos-per-second+) (or fraction repetitions)))))
+    (if fraction
+        (make-v1-from-timestamp (+ (* base +100nanos-per-second+) fraction)
+                                (v1-clock-seq *v1-generator*))
+        (let* ((n (or repetitions 0))
+               (current-counter (+ (v1-clock-seq *v1-generator*) n)))
+          (make-v1-from-timestamp (+ (* base +100nanos-per-second+)
+                                     (mod (floor current-counter
+                                                 +v1-clock-seq-max+)
+                                          +100nanos-per-second+))
+                                  (mod current-counter +v1-clock-seq-max+))))))

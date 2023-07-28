@@ -260,10 +260,10 @@ The Common Lisp standard only provides a function to retrieve the
 current wall-clock time as a number of whole seconds elapsed since the
 Common Lisp epoch. In order to make use of the subsecond bits of the
 timestamp (in UUID versions 1, 6 and 7), the default implementation
-uses them as a counter which is incremented when generating subsequent
-UUID values within the same clock tick. If the number of unique values
-is exhausted the clock sequence is updated and this counter wraps
-around to 0.
+uses them as a counter which is incremented every time the clock
+sequence values are exhausted within the same clock tick. If the
+number of unique values is exhausted, the counter wraps around and
+starts at zero again.
 
 Within the frugal-uuid/non-frugal system a more accurate clock is
 available and the above doesn't apply.

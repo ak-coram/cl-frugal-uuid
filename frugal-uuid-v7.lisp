@@ -43,11 +43,13 @@
   `(let ((*v7-generator* ,v7-generator))
      ,@body))
 
-(declaim (ftype (function (integer integer) (values uuid &optional))
+(declaim (ftype (function (integer
+                           (unsigned-byte 15)
+                           integer)
+                          (values uuid &optional))
                 make-v7-from-timestamp))
-(defun make-v7-from-timestamp (timestamp random)
-  (let ((clock-seq (v7-clock-seq *v7-generator*))
-        (clock-seq-high #xFF)
+(defun make-v7-from-timestamp (timestamp clock-seq random)
+  (let ((clock-seq-high #xFF)
         (time-high-and-version #xFFFF))
     (setf (ldb (byte 4 12) time-high-and-version) #x7 ; Set version to 7
           (ldb (byte 12 0) time-high-and-version) (ldb (byte 12 3) clock-seq)
@@ -75,16 +77,22 @@
     (if (or (null repetitions)       ; Time went backwards
             (zerop repetitions))     ; New tick
         ;; Reinitialize with random value
-        (setf (v7-clock-seq *v7-generator*)
-              (random-v7-clock-seq))
-        (when (or fraction
-                  (zerop (mod repetitions +millis-per-second+)))
-          ;; Ran out of unique values, increment
+        (setf (v7-clock-seq *v7-generator*) (random-v7-clock-seq))
+        (when fraction
+          ;; Increment clock sequence
           (setf (v7-clock-seq *v7-generator*)
                 (mod (1+ (v7-clock-seq *v7-generator*)) +v7-clock-seq-max+))))
-    (make-v7-from-timestamp
-     (+ (* base +millis-per-second+)
-        (if fraction
-            (floor fraction +nanos-per-milli+)
-            (mod repetitions +millis-per-second+)))
-     (random-integer #x7FFFFFFFFFFFFFF))))
+    (let ((random (random-integer #x7FFFFFFFFFFFFFF)))
+      (if fraction
+          (make-v7-from-timestamp (+ (* base +millis-per-second+)
+                                     (floor fraction +nanos-per-milli+))
+                                  (v7-clock-seq *v7-generator*)
+                                  random)
+          (let* ((n (or repetitions 0))
+                 (current-counter (+ (v7-clock-seq *v7-generator*) n)))
+            (make-v7-from-timestamp (+ (* base +millis-per-second+)
+                                       (mod (floor current-counter
+                                                   +v7-clock-seq-max+)
+                                            +millis-per-second+))
+                                    (mod current-counter +v7-clock-seq-max+)
+                                    random))))))
