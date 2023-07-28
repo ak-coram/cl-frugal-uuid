@@ -48,16 +48,16 @@
      (ldb (byte 12 8) nanos)
      custom-c)))
 
-(declaim (ftype (function () uuid)
+(declaim (ftype (function (&optional (unsigned-byte 54)) uuid)
                 make-minara))
-(defun make-minara ()
+(defun make-minara (&optional data)
   "Generate uuid value (custom MiNaRa version based on version 8)."
   (multiple-value-bind (seconds nanos) (funcall *unix-timestamp-function*)
     (multiple-value-bind (millis nanos) (floor nanos +nanos-per-milli+)
       (make-minara-from-components
        (+ (* seconds +millis-per-second+) millis)
        nanos
-       (random-integer +minara-max-random+)))))
+       (or data (random-integer +minara-max-random+))))))
 
 (defparameter *minara-min*
   (make-minara-from-components 0 0 0)

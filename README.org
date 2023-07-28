@@ -244,6 +244,11 @@ The random component may also be used for encoding custom data.
   ;; => 1690512352576 (41 bits, #x1899A636540)
   ;;    887271 (20 bits, #xD89E7)
   ;;    7864781852375150 (53 bits, #x1BF0FA388BF86E)
+
+  (fuuid:minara-components (fuuid:make-minara 42))
+  ;; => 1690514402692 (41 bits, #x1899A82AD84)
+  ;;    507614 (19 bits, #x7BEDE)
+  ;;    42 (6 bits, #x2A, #o52, #b101010)
 #+end_src
 
 ** Timestamps
