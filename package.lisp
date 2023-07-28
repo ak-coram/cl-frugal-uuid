@@ -90,4 +90,12 @@
            #:make-v7
 
            ;; Version 8 (IETF draft)
-           #:make-v8))
+           #:make-v8
+
+           ;; MiNaRa (custom timestamp-based UUID via version 8, not
+           ;; implemented in the base frugal system)
+           #:minara-components
+           #:make-minara-from-components
+           #:make-minara
+           #:*minara-min*
+           #:*minara-max*))
