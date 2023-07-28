@@ -2,6 +2,8 @@
 
 (in-package #:frugal-uuid)
 
+(defconstant +v1-clock-seq-max+ #b11111111111111)
+
 (defclass v1-generator ()
   ((node-id :initarg :v1-node-id
             :accessor v1-node-id
@@ -57,14 +59,15 @@
   (multiple-value-bind (base fraction repetitions)
       (funcall (v1-timestamp-generator *v1-generator*))
     ;; Change clock-seq when necessary
-    (when (or
-           ;; Time went backwards
-           (null repetitions)
-           ;; Ran out of unique values
-           (and (plusp repetitions)
-                (or fraction
-                    (zerop (mod repetitions +100nanos-per-second+)))))
-      (setf (v1-clock-seq *v1-generator*)
-            (mod (1+ (v1-clock-seq *v1-generator*)) #b11111111111111)))
+    (if (or (null repetitions)       ; Time went backwards
+            (zerop repetitions))     ; New tick
+        ;; Reinitialize with random value
+        (setf (v1-clock-seq *v1-generator*)
+              (random-clock-seq))
+        (when (or fraction
+                  (zerop (mod repetitions +100nanos-per-second+)))
+          ;; Ran out of unique values, increment
+          (setf (v1-clock-seq *v1-generator*)
+                (mod (1+ (v1-clock-seq *v1-generator*)) +v1-clock-seq-max+))))
     (make-v1-from-timestamp
      (+ (* base +100nanos-per-second+) (or fraction repetitions)))))

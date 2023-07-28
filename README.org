@@ -142,6 +142,9 @@ there's no mechanism included in this library for determining the
 systems MAC address, but the PARSE-NODE-ID function is included for
 parsing it once obtained.
 
+The clock sequence is reinitialized on every new clock tick with the
+highest bit set to zero and a random value for the remaining bits.
+
 To avoid repeated values, it is recommended for multithreaded
 applications to use a separate generator for each thread. This is
 automatically done using bordeaux-threads if you use the
@@ -205,9 +208,12 @@ functions instead:
 
 *** Version 7 (based on IETF draft)
 
-A 48 bit unix timestamp (milliseconds), a 18 bit counter (used as a
-clock sequence as in version 1) and 56 bits of random data are used
-for generating version 7 UUID values.
+A 48 bit unix timestamp (milliseconds), a 15 bit counter (used as a
+clock sequence similarly to version 1) and 59 bits of random data are
+used for generating version 7 UUID values.
+
+The counter is reinitialized on every clock tick with the highest bit
+set to zero and a random value for the remaining bits.
 
 *** Version 8 (based on IETF draft)
 

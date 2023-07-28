@@ -22,7 +22,9 @@ the number of additional nanoseconds as a second value or NIL if
 unknown.")
 
 (defun random-clock-seq ()
-  (random-integer #b11111111111111))
+  ;; Only use 13 bits for initial clock-seq to
+  ;; minimize rollover:
+  (random-integer #b1111111111111))
 
 (defun get-current-timestamp (uuid-epoch low-resolution)
   (multiple-value-bind (seconds nanos) (funcall *unix-timestamp-function*)
