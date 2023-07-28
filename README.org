@@ -313,8 +313,9 @@ To avoid this, you can clear the global state before saving your image
 or on image startup (it will be reinitialized on first use):
 
 #+begin_src lisp
-  (setf fuuid:*random-number-generator* nil
-        fuuid:*v1-generator* nil)
+    (setf fuuid:*random-number-generator* nil
+          fuuid:*v1-generator* nil
+          fuuid:*v7-generator* nil)
 #+end_src
 
 If you only load the systems in this project this should not be an

@@ -7,4 +7,5 @@
                    (lambda () (ironclad:make-prng :os)))
 
 ;; Clear version 1 generator (will be initialized on first use)
-(setf *v1-generator* nil)
+(setf *v1-generator* nil
+      *v7-generator* nil)
