@@ -208,6 +208,20 @@ functions instead:
 A 48 bit unix timestamp (milliseconds), a 18 bit counter and 56 bits
 of random data are used for generating version 7 UUID values.
 
+** Timestamps
+
+The Common Lisp standard only provides a function to retrieve the
+current wall-clock time as a number of whole seconds elapsed since the
+Common Lisp epoch. In order to make use of the subsecond bits of the
+timestamp values in version 1 and 7 UUIDs the default implementation
+uses them as a counter which is incremented when generating subsequent
+UUID values within the same clock tick. If the number of unique values
+is exhausted the clock sequence is updated and this counter wraps
+around to 0.
+
+Within the frugal-uuid/non-frugal system a more accurate clock is
+available and the above doesn't apply.
+
 ** Randomness
 
 If you have an alternative source of random numbers, you can use it
