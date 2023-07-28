@@ -19,6 +19,7 @@ Common Lisp [[https://en.wikipedia.org/wiki/Universally_unique_identifier][UUID]
 
 - Permissive license (MIT)
 - Small (e.g. doesn't rely on [[https://github.com/sharplispers/ironclad][Ironclad]] by default)
+- Comprehensive (e.g. tries to cover new versions from the [[https://www.ietf.org/archive/id/draft-peabody-dispatch-new-uuid-format-04.txt][IETF draft]])
 
 ** Limitations
 
@@ -27,10 +28,8 @@ random number generator is used, which might not be of sufficient
 quality for your purposes. The use of cryptographic-quality random
 numbers is strongly recommended in order to reduce the probability of
 repeated values. Please see the section on randomness in this README
-for setting up an alternative source of random numbers.
-
-Please also see [[https://github.com/ak-coram/cl-frugal-uuid#Saving-a-Lisp-image][this section]] of the README if you intend on saving
-your program as a Lisp image.
+for setting up an alternative source of random numbers especially for
+generating UUID versions 4 and 7.
 
 You can also use the [[https://github.com/ak-coram/cl-frugal-uuid#non-frugal-setup][frugal-uuid/non-frugal]] system to change the
 defaults and provide support for generating name-based UUIDs (versions
@@ -38,6 +37,9 @@ defaults and provide support for generating name-based UUIDs (versions
 generate new UUIDs via this library: for representing existing UUIDs
 (parsing, comparing and converting values) relying on the frugal-uuid
 system should be sufficient.
+
+Please also see [[https://github.com/ak-coram/cl-frugal-uuid#Saving-a-Lisp-image][this section]] of the README if you intend on saving
+your program as a Lisp image.
 
 UUID versions above version 5 are based on version 04 of the [[https://www.ietf.org/archive/id/draft-peabody-dispatch-new-uuid-format-04.txt][IETF
 draft]] and should be considered experimental.
@@ -122,10 +124,10 @@ The above system is provided to conveniently setup the following:
 - Use [[https://github.com/ak-coram/cl-trivial-clock][cl-trivial-clock]] to generate more accurate timestamps by relying
   on platform-specific functionality.
 - Automatically use a new PRNG and randomize node ID & clock sequence
-  for generating version 1 UUIDs for each new thread (via
-  [[https://github.com/ak-coram/cl-frugal-uuid/blob/main/non-frugal/thread-safe.lisp][bordeaux-threads]]).
+  for generating version 1 and version 7 UUIDs for each new thread
+  (via [[https://github.com/ak-coram/cl-frugal-uuid/blob/main/non-frugal/thread-safe.lisp][bordeaux-threads]]).
 - Define the [[https://github.com/ak-coram/cl-frugal-uuid/blob/main/non-frugal/name-based.lisp][MAKE-V3 and MAKE-V5 functions]] relying on the babel and
-  Ironclad libraries.
+  Ironclad libraries for hashing.
 
 frugal-uuid/non-frugal is composed of multiple systems which can also
 be loaded individually if you only require parts of the above. See
@@ -206,6 +208,11 @@ functions instead:
 - V6-TIME-MID
 - V6-TIME-HIGH
 
+#+begin_src lisp
+  (fuuid:make-v6)
+  ;; => #<FRUGAL-UUID:UUID 1ee2d53a-729c-6929-8c8c-e780ff7b0e6a>
+#+end_src
+
 *** Version 7 (based on IETF draft)
 
 A 48 bit unix timestamp (milliseconds), a 15 bit counter (used as a
@@ -214,6 +221,11 @@ used for generating version 7 UUID values.
 
 The counter is reinitialized on every clock tick with the highest bit
 set to zero and a random value for the remaining bits.
+
+#+begin_src lisp
+  (fuuid:make-v7)
+  ;; => #<FRUGAL-UUID:UUID 01899cec-4c97-77a1-ab69-18d4cc5aa465>
+#+end_src
 
 *** Version 8 (based on IETF draft)
 
@@ -261,7 +273,7 @@ current wall-clock time as a number of whole seconds elapsed since the
 Common Lisp epoch. In order to make use of the subsecond bits of the
 timestamp (in UUID versions 1, 6 and 7), the default implementation
 uses them as a counter which is incremented every time the clock
-sequence values are exhausted within the same clock tick. If the
+sequence values are exhausted within the same clock tick. If the total
 number of unique values is exhausted, the counter wraps around and
 starts at zero again.
 
