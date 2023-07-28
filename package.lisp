@@ -95,6 +95,7 @@
 
            ;; MiNaRa (custom timestamp-based UUID via version 8, not
            ;; implemented in the base frugal system)
+           #:+minara-max-random+
            #:minara-components
            #:make-minara-from-components
            #:make-minara
