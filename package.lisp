@@ -32,6 +32,7 @@
            #:initialize-random
            #:with-random
            #:with-random-number-generator
+           #:random-integer
 
            ;; Clock
            #:*unix-timestamp-function*
