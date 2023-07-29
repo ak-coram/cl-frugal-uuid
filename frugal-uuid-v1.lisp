@@ -70,10 +70,9 @@
     (if fraction
         (make-v1-from-timestamp (+ (* base +100nanos-per-second+) fraction)
                                 (v1-clock-seq *v1-generator*))
-        (let* ((n (or repetitions 0))
-               (current-counter (+ (v1-clock-seq *v1-generator*) n)))
+        (multiple-value-bind (ticks clock-seq)
+            (floor (+ (v1-clock-seq *v1-generator*) (or repetitions 0))
+                   +v1-clock-seq-max+)
           (make-v1-from-timestamp (+ (* base +100nanos-per-second+)
-                                     (mod (floor current-counter
-                                                 +v1-clock-seq-max+)
-                                          +100nanos-per-second+))
-                                  (mod current-counter +v1-clock-seq-max+))))))
+                                     (mod ticks +100nanos-per-second+))
+                                  clock-seq)))))

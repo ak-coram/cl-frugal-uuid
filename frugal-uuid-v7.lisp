@@ -89,11 +89,10 @@
                                      fraction)
                                   (v7-clock-seq *v7-generator*)
                                   random)
-          (let* ((n (or repetitions 0))
-                 (current-counter (+ (v7-clock-seq *v7-generator*) n)))
+          (multiple-value-bind (ticks clock-seq)
+              (floor (+ (v7-clock-seq *v7-generator*) (or repetitions 0))
+                     +v7-clock-seq-max+)
             (make-v7-from-timestamp (+ (* base +millis-per-second+)
-                                       (mod (floor current-counter
-                                                   +v7-clock-seq-max+)
-                                            +millis-per-second+))
-                                    (mod current-counter +v7-clock-seq-max+)
+                                       (mod ticks +millis-per-second+))
+                                    clock-seq
                                     random))))))
