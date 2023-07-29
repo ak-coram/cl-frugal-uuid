@@ -14,12 +14,17 @@
    (timestamp-generator :initarg :v1-timestamp-generator
                         :accessor v1-timestamp-generator)))
 
+(defun floor100 (n)
+  (floor n 100))
+
 (defun make-v1-generator (&key node-id clock-seq timestamp-generator)
   (make-instance 'v1-generator
                  :v1-node-id (or node-id (random-node-id))
                  :v1-clock-seq (or clock-seq (random-clock-seq))
                  :v1-timestamp-generator (or timestamp-generator
-                                             (make-timestamp-generator))))
+                                             (make-timestamp-generator
+                                              :make-fraction-function
+                                              #'floor100))))
 
 (defvar *v1-generator* nil)
 (defvar *v1-generator-init-function* #'make-v1-generator)

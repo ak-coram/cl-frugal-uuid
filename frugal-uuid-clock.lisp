@@ -26,24 +26,24 @@ unknown.")
   ;; minimize rollover:
   (random-integer #b1111111111111))
 
-(defun get-current-timestamp (uuid-epoch divisor)
+(defun get-current-timestamp (uuid-epoch make-fraction-function)
   (multiple-value-bind (seconds nanos) (funcall *unix-timestamp-function*)
     (let* ((seconds (if uuid-epoch
                         (+ seconds +unix-time-uuid-epoch-offset-seconds+)
                         seconds))
-           (fraction (if (and nanos divisor)
-                         (floor nanos divisor)
+           (fraction (if (and nanos make-fraction-function)
+                         (funcall make-fraction-function nanos)
                          nanos)))
       (values seconds fraction))))
 
 (defun make-timestamp-generator
-    (&key (uuid-epoch t) (nanos-divisor 100) (repetitions-increment 1))
+    (&key (uuid-epoch t) (make-fraction-function nil) (repetitions-increment 1))
   (let ((previous-base nil)
         (previous-fraction nil)
         (repetitions 0))
     (lambda ()
       (multiple-value-bind (base fraction)
-          (get-current-timestamp uuid-epoch nanos-divisor)
+          (get-current-timestamp uuid-epoch make-fraction-function)
         (labels ((return-results (n)
                    (setf previous-base base
                          previous-fraction fraction)

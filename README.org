@@ -41,7 +41,7 @@ system should be sufficient.
 Please also see [[https://github.com/ak-coram/cl-frugal-uuid#Saving-a-Lisp-image][this section]] of the README if you intend on saving
 your program as a Lisp image.
 
-UUID versions above version 5 are based on version 04 of the [[https://www.ietf.org/archive/id/draft-peabody-dispatch-new-uuid-format-04.txt][IETF
+UUID versions above version 5 are based on version 08 of the [[https://www.ietf.org/archive/id/draft-ietf-uuidrev-rfc4122bis-08.txt][IETF
 draft]] and should be considered experimental.
 
 The following implementations and operating systems are tested via [[https://github.com/ak-coram/cl-frugal-uuid/blob/main/.github/workflows/CI.yml][CI]]:
@@ -215,16 +215,39 @@ functions instead:
 
 *** Version 7 (based on IETF draft)
 
-A 48 bit unix timestamp (milliseconds), a 15 bit counter (used as a
-clock sequence similarly to version 1) and 59 bits of random data are
-used for generating version 7 UUID values.
+When an accurate system clock is available (see
+frugal-uuid/non-frugal):
 
-The counter is reinitialized on every clock tick with the highest bit
-set to zero and a random value for the remaining bits.
+- 48 bit unsigned unix timestamp (milliseconds)
+- 12 bits for storing sub-millisecond precision
+- 62 bit monotonic random counter
+
+This approach is a combination of methods 2 and 3 from the
+specification for providing monotonicity.
+
+When no accurate clock is available:
+
+- 48 bit unsigned unix timestamp (also stored as a number of
+  milliseconds, but only updates every second)
+- 74 bit monotonic random counter
+
+This corresponds to method 2 from the specification for providing
+monotonicity.
+
+Regarding the monotonic random counter:
+
+- Is randomly reinitialized on every clock tick (or when the system
+  clock is changed backwards) while generating successive UUID
+  values. The highest 2 bits are always set to zero to minimize
+  rollover.
+- Is incremented when successive UUID values are generated for the
+  same timestamp (which includes the sub-millisecond bits for accurate
+  clocks). The increment is a 16-bit random number to make values less
+  guessable.
 
 #+begin_src lisp
   (fuuid:make-v7)
-  ;; => #<FRUGAL-UUID:UUID 01899cec-4c97-77a1-ab69-18d4cc5aa465>
+  ;; => #<UUID 0189a085-b115-7e5d-8664-3c5fbe542e4c>
 #+end_src
 
 *** Version 8 (based on IETF draft)
