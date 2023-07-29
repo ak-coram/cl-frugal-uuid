@@ -7,32 +7,50 @@
 
 (define-benchmark gen-100k-v1-uuids ()
   (declare (optimize speed))
-  (fuuid:with-random (#'random (make-random-state t))
-    (fuuid:with-v1-generator (fuuid:make-v1-generator)
-      (dotimes (_ 10)
-        (with-benchmark-sampling
-          (dotimes (_ 100000) (fuuid:make-v1)))))))
+  (dotimes (_ 10)
+    (with-benchmark-sampling
+      (dotimes (_ 100000) (fuuid:make-v1)))))
+
+(when (fboundp 'fuuid:make-v3)
+  (define-benchmark gen-100k-v3-uuids ()
+    (declare (optimize speed))
+    (dotimes (_ 10)
+      (with-benchmark-sampling
+        (dotimes (_ 100000) (fuuid:make-v3 fuuid:*ns-url*
+                                           "https://html5zombo.com/"))))))
 
 (define-benchmark gen-100k-v4-uuids ()
   (declare (optimize speed))
-  (fuuid:with-random (#'random (make-random-state t))
-    (dotimes (_ 10)
-      (with-benchmark-sampling
-        (dotimes (_ 100000) (fuuid:make-v4))))))
+  (dotimes (_ 10)
+    (with-benchmark-sampling
+      (dotimes (_ 100000) (fuuid:make-v4)))))
 
-(define-benchmark gen-100k-secure-random-v4-uuids ()
-  (declare (optimize speed))
-  (fuuid:with-random (#'secure-random:number secure-random:*generator*)
+(when (fboundp 'fuuid:make-v5)
+  (define-benchmark gen-100k-v5-uuids ()
+    (declare (optimize speed))
     (dotimes (_ 10)
       (with-benchmark-sampling
-        (dotimes (_ 100000) (fuuid:make-v4))))))
+        (dotimes (_ 100000) (fuuid:make-v5 fuuid:*ns-url*
+                                           "https://html5zombo.com/"))))))
 
-(define-benchmark gen-100k-ironclad-random-v4-uuids ()
+(define-benchmark gen-100k-v6-uuids ()
   (declare (optimize speed))
-  (fuuid:with-random (#'crypto:strong-random (ironclad:make-prng :os))
+  (dotimes (_ 10)
+    (with-benchmark-sampling
+      (dotimes (_ 100000) (fuuid:make-v6)))))
+
+(define-benchmark gen-100k-v7-uuids ()
+  (declare (optimize speed))
+  (dotimes (_ 10)
+    (with-benchmark-sampling
+      (dotimes (_ 100000) (fuuid:make-v7)))))
+
+(when (fboundp 'fuuid:make-minara)
+  (define-benchmark gen-100k-minara-uuids ()
+    (declare (optimize speed))
     (dotimes (_ 10)
       (with-benchmark-sampling
-        (dotimes (_ 100000) (fuuid:make-v4))))))
+        (dotimes (_ 100000) (fuuid:make-minara))))))
 
 (defun floatify-results (benchmark-results)
   (loop :for v :being :each :hash-values :of benchmark-results

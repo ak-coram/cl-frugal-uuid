@@ -74,6 +74,6 @@
 
 (asdf:defsystem #:frugal-uuid/*
   :depends-on (#:frugal-uuid
-               #:frugal-uuid/test
+               #:frugal-uuid/non-frugal
                #:frugal-uuid/benchmark
-               #:frugal-uuid/non-frugal))
+               #:frugal-uuid/test))

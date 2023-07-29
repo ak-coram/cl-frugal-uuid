@@ -30,4 +30,7 @@ jobs:
       - name: Run benchmarks
         shell: bash
         run: |
-          ros run --eval '(progn (ql:quickload :frugal-uuid/benchmark) (asdf:test-system :frugal-uuid/benchmark) (quit))'
+          echo "Base benchmark"
+          ros run --eval '(ql:quickload :frugal-uuid/benchmark)' --eval '(progn (asdf:test-system :frugal-uuid/benchmark) (quit))'
+          echo "Non-frugal benchmark"
+          ros run --eval '(ql:quickload :frugal-uuid/*)' --eval '(progn (asdf:test-system :frugal-uuid/benchmark) (quit))'
