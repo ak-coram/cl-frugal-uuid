@@ -28,7 +28,8 @@
                  :v7-timestamp-generator (or timestamp-generator
                                              (make-timestamp-generator
                                               :uuid-epoch nil
-                                              :low-resolution nil))))
+                                              :nanos-divisor
+                                              +nanos-per-milli+))))
 
 (defvar *v7-generator* nil)
 (defvar *v7-generator-init-function* #'make-v7-generator)
@@ -85,7 +86,7 @@
     (let ((random (random-integer #x7FFFFFFFFFFFFFF)))
       (if fraction
           (make-v7-from-timestamp (+ (* base +millis-per-second+)
-                                     (floor fraction +nanos-per-milli+))
+                                     fraction)
                                   (v7-clock-seq *v7-generator*)
                                   random)
           (let* ((n (or repetitions 0))
