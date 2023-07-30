@@ -426,4 +426,5 @@ Here's an example session illustrating the issue:
 ** Legal
 
 - Released under the MIT License.
+- [[https://developercertificate.org/][Developer Certificate of Origin]]
 - [[https://commons.wikimedia.org/wiki/File:NASA_satellite_view_of_Southern_Ocean_phytoplankton_bloom_(crop).jpg][Source]] for README photo
