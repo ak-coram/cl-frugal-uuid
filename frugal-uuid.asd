@@ -64,9 +64,7 @@
 
 (asdf:defsystem #:frugal-uuid/benchmark
   :depends-on (#:frugal-uuid
-               #:trivial-benchmark
-               #:ironclad/prngs
-               #:secure-random)
+               #:trivial-benchmark)
   :components ((:file "frugal-uuid-benchmark"))
   :perform (test-op
             (o c)
