@@ -18,7 +18,7 @@ jobs:
     strategy:
       matrix:
         lisp: [sbcl-bin, ccl-bin/1.12.1, ecl/21.2.1]
-        os: [ubuntu-latest, macos-latest]
+        os: [ubuntu-latest, windows-latest, macos-latest]
         quicklisp-dist:
           - ultralisp
         exclude:
@@ -53,6 +53,7 @@ jobs:
         if: runner.os == 'Windows'
         shell: msys2 {0}
         run: |
+          ros --eval '(ql-dist:install-dist "http://dist.ultralisp.org/" :prompt nil)' --eval '(uiop:quit)'
           ros install neil-lindquist/ci-utils
           run-fiveam -e t -l frugal-uuid/test :frugal-uuid
           run-fiveam -e t -l frugal-uuid/non-frugal -l frugal-uuid/test :frugal-uuid
