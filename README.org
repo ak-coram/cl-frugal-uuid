@@ -19,7 +19,7 @@ Common Lisp [[https://en.wikipedia.org/wiki/Universally_unique_identifier][UUID]
 
 - Permissive license (MIT)
 - Small (e.g. doesn't rely on [[https://github.com/sharplispers/ironclad][Ironclad]] by default)
-- Comprehensive (e.g. tries to cover new versions from the [[https://www.ietf.org/archive/id/draft-peabody-dispatch-new-uuid-format-04.txt][IETF draft]])
+- Comprehensive (e.g. tries to cover new versions from the [[https://www.ietf.org/archive/id/draft-ietf-uuidrev-rfc4122bis-10.txt][IETF draft]])
 
 ** Limitations
 
@@ -41,7 +41,7 @@ system should be sufficient.
 Please also see [[https://github.com/ak-coram/cl-frugal-uuid#Saving-a-Lisp-image][this section]] of the README if you intend on saving
 your program as a Lisp image.
 
-UUID versions above version 5 are based on version 08 of the [[https://www.ietf.org/archive/id/draft-ietf-uuidrev-rfc4122bis-08.txt][IETF
+UUID versions above version 5 are based on version 10 of the [[https://www.ietf.org/archive/id/draft-ietf-uuidrev-rfc4122bis-10.txt][IETF
 draft]] and should be considered experimental.
 
 The following implementations and operating systems are tested via [[https://github.com/ak-coram/cl-frugal-uuid/blob/main/.github/workflows/CI.yml][CI]]:
