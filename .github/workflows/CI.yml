@@ -28,7 +28,7 @@ jobs:
       LISP: ${{ matrix.lisp }}
       QUICKLISP_DIST: ${{ matrix.quicklisp-dist }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Setup Lisp
         continue-on-error: true

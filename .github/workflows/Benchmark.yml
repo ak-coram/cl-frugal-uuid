@@ -20,7 +20,7 @@ jobs:
     env:
       LISP: ${{ matrix.lisp }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Setup Lisp
         continue-on-error: true
