@@ -13,37 +13,36 @@ on:
 
 jobs:
   test:
-    name: ${{ matrix.lisp }} / ${{ matrix.quicklisp-dist }} on ${{ matrix.os }}
+    name: ${{ matrix.lisp }} on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         lisp: [sbcl-bin, ccl-bin/1.12.2, ecl/23.9.9]
         os: [ubuntu-latest, windows-latest, macos-latest]
-        quicklisp-dist:
-          - ultralisp
         exclude:
           - os: windows-latest
             lisp: ecl/23.9.9
+          - os: windows-latest
+            lisp: ccl-bin/1.12.2
+          - os: macos-latest
+            lisp: ccl-bin/1.12.2
     env:
       LISP: ${{ matrix.lisp }}
-      QUICKLISP_DIST: ${{ matrix.quicklisp-dist }}
     steps:
       - uses: actions/checkout@v4
 
       - name: Setup Lisp
-        continue-on-error: true
-        uses: 40ants/setup-lisp@v2
+        uses: 40ants/setup-lisp@v4
         with:
           qlfile-template: |
-            {% ifequal quicklisp_dist "ultralisp" %}
             dist ultralisp http://dist.ultralisp.org
-            {% endifequal %}
 
       - name: Run tests (Non-Windows)
         if: runner.os != 'Windows'
         shell: bash
         run: |
           ros install neil-lindquist/ci-utils
+          asdf-register-project
           run-fiveam -e t -l frugal-uuid/test :frugal-uuid
           run-fiveam -e t -l frugal-uuid/non-frugal -l frugal-uuid/test :frugal-uuid
 
@@ -53,5 +52,6 @@ jobs:
         run: |
           ros --eval '(ql-dist:install-dist "http://dist.ultralisp.org/" :prompt nil)' --eval '(uiop:quit)'
           ros install neil-lindquist/ci-utils
+          asdf-register-project
           run-fiveam -e t -l frugal-uuid/test :frugal-uuid
           run-fiveam -e t -l frugal-uuid/non-frugal -l frugal-uuid/test :frugal-uuid

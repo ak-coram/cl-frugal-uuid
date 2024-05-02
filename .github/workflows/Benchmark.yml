@@ -23,8 +23,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Setup Lisp
-        continue-on-error: true
-        uses: 40ants/setup-lisp@v2
+        uses: 40ants/setup-lisp@v4
         with:
           qlfile-template: |
             dist ultralisp http://dist.ultralisp.org
@@ -32,6 +31,8 @@ jobs:
       - name: Run benchmarks
         shell: bash
         run: |
+          ros install neil-lindquist/ci-utils
+          asdf-register-project
           echo "Base benchmark"
           ros run --eval '(ql:quickload :frugal-uuid/benchmark)' --eval '(progn (asdf:test-system :frugal-uuid/benchmark) (quit))'
           echo "Non-frugal benchmark"
