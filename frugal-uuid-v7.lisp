@@ -73,7 +73,7 @@
                    :clock-seq-low (ldb (byte 8 48) data)
                    :node (ldb (byte 48 0) data))))
 
-(declaim (ftype (function () uuid) make-v7))
+(declaim (ftype (function () (values uuid &optional)) make-v7))
 (defun make-v7 ()
   "Generate uuid value (version 7)."
   (unless *v7-generator* (initialize-v7-generator))

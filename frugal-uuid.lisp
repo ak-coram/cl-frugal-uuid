@@ -43,7 +43,7 @@
                  :clock-seq-low (ldb (byte 8 48) i)
                  :node (ldb (byte 48 0) i)))
 
-(declaim (ftype (function (uuid) integer) to-integer))
+(declaim (ftype (function (uuid) (values integer &optional)) to-integer))
 (defun to-integer (uuid)
   "Convert uuid value to integer representation."
   (let ((i 0))
@@ -55,7 +55,7 @@
           (ldb (byte 48 0) i) (node uuid))
     i))
 
-(declaim (ftype (function (string) uuid) from-string))
+(declaim (ftype (function (string) (values uuid &optional)) from-string))
 (defun from-string (s)
   "Parse uuid value from canonical textual representation."
   (unless (eql (length s) 36)
@@ -67,7 +67,7 @@
       :do (error "UUID parse error: expected - at index ~a, found ~a instead." i c))
   (from-integer (parse-integer (remove #\- s) :radix 16)))
 
-(declaim (ftype (function (uuid) string) to-string))
+(declaim (ftype (function (uuid) (values string &optional)) to-string))
 (defun to-string (uuid)
   "Convert uuid value into canonical textual representation."
   (format nil "~(~8,'0x-~4,'0x-~4,'0x-~2,'0x~2,'0x-~12,'0x~)"
@@ -78,7 +78,8 @@
           (clock-seq-low uuid)
           (node uuid)))
 
-(declaim (ftype (function (integer) (simple-array (unsigned-byte 8)))
+(declaim (ftype (function (integer) (values (simple-array (unsigned-byte 8))
+					    &optional))
                 integer-to-octets))
 (defun integer-to-octets (i)
   (loop :with octets := (make-array '(16) :element-type '(unsigned-byte 8))
@@ -88,7 +89,8 @@
                   (ldb (byte 8 bit-index) i))
         :finally (return octets)))
 
-(declaim (ftype (function ((simple-array (unsigned-byte 8))) integer)
+(declaim (ftype (function ((simple-array (unsigned-byte 8)))
+			  (values integer &optional))
                 octets-to-integer))
 (defun octets-to-integer (octets)
   (loop :with i := 0
@@ -98,22 +100,26 @@
                   (aref octets octet-index))
         :finally (return i)))
 
-(declaim (ftype (function (uuid) (simple-array (unsigned-byte 8))) to-octets))
+(declaim (ftype (function (uuid) (values (simple-array (unsigned-byte 8))
+					 &optional))
+		to-octets))
 (defun to-octets (uuid)
   "Create a vector of octets from uuid value."
   (integer-to-octets (to-integer uuid)))
 
-(declaim (ftype (function ((simple-array (unsigned-byte 8))) uuid) from-octets))
+(declaim (ftype (function ((simple-array (unsigned-byte 8)))
+			  (values uuid &optional))
+		from-octets))
 (defun from-octets (octets)
   "Create uuid value from a vector of octets."
   (from-integer (octets-to-integer octets)))
 
-(declaim (ftype (function (uuid) symbol) to-sym))
+(declaim (ftype (function (uuid) (values symbol &optional)) to-sym))
 (defun to-sym (uuid)
   "Create a symbol (uppercase) from uuid value."
   (make-symbol (string-upcase (to-string uuid))))
 
-(declaim (ftype (function (symbol) uuid) from-sym))
+(declaim (ftype (function (symbol) (values uuid &optional)) from-sym))
 (defun from-sym (sym)
   "Create uuid value from a symbol."
   (from-string (format nil "~a" sym)))
@@ -144,7 +150,7 @@
                  :clock-seq-low #xFF
                  :node #xFFFFFFFFFFFF))
 
-(declaim (ftype (function (uuid uuid) boolean) uuid=))
+(declaim (ftype (function (uuid uuid) (values boolean &optional)) uuid=))
 (defun uuid= (x y)
   "Strictly compare uuid inputs for equality.
 
