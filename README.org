@@ -19,7 +19,7 @@ Common Lisp [[https://en.wikipedia.org/wiki/Universally_unique_identifier][UUID]
 
 - Permissive license (MIT)
 - Small (e.g. doesn't rely on [[https://github.com/sharplispers/ironclad][Ironclad]] by default)
-- Comprehensive (e.g. tries to cover new versions from the [[https://www.ietf.org/archive/id/draft-ietf-uuidrev-rfc4122bis-11.txt][IETF draft]])
+- Comprehensive (e.g. tries to cover new versions from [[https://www.rfc-editor.org/rfc/rfc9562][RFC 9562]])
 
 ** Limitations
 
@@ -40,9 +40,6 @@ system should be sufficient.
 
 Please also see [[https://github.com/ak-coram/cl-frugal-uuid#Saving-a-Lisp-image][this section]] of the README if you intend on saving
 your program as a Lisp image.
-
-UUID versions above version 5 are based on version 11 of the [[https://www.ietf.org/archive/id/draft-ietf-uuidrev-rfc4122bis-11.txt][IETF
-draft]] and should be considered experimental.
 
 The following implementations and operating systems are tested via [[https://github.com/ak-coram/cl-frugal-uuid/blob/main/.github/workflows/CI.yml][CI]]:
 
@@ -195,7 +192,7 @@ generate name-based (version 3 or version 5) UUIDs:
   ;; => #<FRUGAL-UUID:UUID dd4d48d9-d46b-58a0-977e-e9e5e20a6e9c>
 #+end_src
 
-*** Version 6 (based on IETF draft)
+*** Version 6
 
 The implementation first generates a version 1 UUID (see above) and
 reorders the timestamp fields to create a version 6 UUID value. Please
@@ -213,7 +210,7 @@ functions instead:
   ;; => #<FRUGAL-UUID:UUID 1ee2d53a-729c-6929-8c8c-e780ff7b0e6a>
 #+end_src
 
-*** Version 7 (based on IETF draft)
+*** Version 7
 
 When an accurate system clock is available (see
 frugal-uuid/non-frugal):
@@ -250,7 +247,7 @@ Regarding the monotonic random counter:
   ;; => #<UUID 0189a085-b115-7e5d-8664-3c5fbe542e4c>
 #+end_src
 
-*** Version 8 (based on IETF draft)
+*** Version 8
 
 The MAKE-V8 function is provided to create version 8 UUID values from
 specifying the three custom components:
