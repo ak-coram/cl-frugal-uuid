@@ -2,9 +2,6 @@
 
 (in-package #:frugal-uuid)
 
-;; Based on IETF draft:
-;; https://www.ietf.org/archive/id/draft-ietf-uuidrev-rfc4122bis-08.txt
-
 (declaim (ftype (function (uuid) (values uuid &optional))
                 make-v6-from-v1))
 (defun make-v6-from-v1 (v1)

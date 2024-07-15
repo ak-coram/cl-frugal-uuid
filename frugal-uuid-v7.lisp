@@ -2,9 +2,6 @@
 
 (in-package #:frugal-uuid)
 
-;; Based on IETF draft:
-;; https://www.ietf.org/archive/id/draft-ietf-uuidrev-rfc4122bis-08.txt
-
 (defconstant +v7-random-counter-max+ #x3FFFFFFFFFFFFFFFFFF)
 
 (defclass v7-generator ()

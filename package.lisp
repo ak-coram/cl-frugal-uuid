@@ -74,14 +74,14 @@
            #:make-v5-from-octets
            #:make-v5
 
-           ;; Version 6 (IETF draft)
+           ;; Version 6
            #:v6-time-hi
            #:v6-time-mid
            #:v6-time-low-and-version
            #:make-v6-from-v1
            #:make-v6
 
-           ;; Version 7 (IETF draft)
+           ;; Version 7
            #:*v7-generator*
            #:*v7-generator-init-function*
            #:make-v7-generator
@@ -90,7 +90,7 @@
            #:make-v7-from-timestamp
            #:make-v7
 
-           ;; Version 8 (IETF draft)
+           ;; Version 8
            #:make-v8
 
            ;; MiNaRa (custom timestamp-based UUID via version 8, not
