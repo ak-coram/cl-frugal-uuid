@@ -59,6 +59,22 @@
        nanos
        (or data (random-integer +minara-max-random+))))))
 
+(declaim (inline make-minara-integer))
+(defun make-minara-integer (&optional data)
+  (to-integer (make-minara data)))
+
+(declaim (inline make-minara-string))
+(defun make-minara-string (&optional data)
+  (to-string (make-minara data)))
+
+(declaim (inline make-minara-octets))
+(defun make-minara-octets (&optional data)
+  (to-octets (make-minara data)))
+
+(declaim (inline make-minara-sym))
+(defun make-minara-sym (&optional data)
+  (to-sym (make-minara data)))
+
 (defparameter *minara-min*
   (make-minara-from-components 0 0 0)
   "Smallest possible MiNaRa UUID")

@@ -16,3 +16,19 @@
   (let* ((limit #xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF)
          (base (random-integer limit)))
     (make-v4-from-integer base)))
+
+(declaim (inline make-v4-integer))
+(defun make-v4-integer ()
+  (to-integer (make-v4)))
+
+(declaim (inline make-v4-string))
+(defun make-v4-string ()
+  (to-string (make-v4)))
+
+(declaim (inline make-v4-octets))
+(defun make-v4-octets ()
+  (to-octets (make-v4)))
+
+(declaim (inline make-v4-sym))
+(defun make-v4-sym ()
+  (to-sym (make-v4)))

@@ -22,3 +22,19 @@
                    :clock-seq-hi-and-res clock-seq-high
                    :clock-seq-low (ldb (byte 8 48) c)
                    :node (ldb (byte 48 0) c))))
+
+(declaim (inline make-v8-integer))
+(defun make-v8-integer (a b c)
+  (to-integer (make-v8 a b c)))
+
+(declaim (inline make-v8-string))
+(defun make-v8-string (a b c)
+  (to-string (make-v8 a b c)))
+
+(declaim (inline make-v8-octets))
+(defun make-v8-octets (a b c)
+  (to-octets (make-v8 a b c)))
+
+(declaim (inline make-v8-sym))
+(defun make-v8-sym (a b c)
+  (to-sym (make-v8 a b c)))

@@ -100,3 +100,19 @@
                                     data))
           (make-v7-from-timestamp (* base +millis-per-second+)
                                   data)))))
+
+(declaim (inline make-v7-integer))
+(defun make-v7-integer ()
+  (to-integer (make-v7)))
+
+(declaim (inline make-v7-string))
+(defun make-v7-string ()
+  (to-string (make-v7)))
+
+(declaim (inline make-v7-octets))
+(defun make-v7-octets ()
+  (to-octets (make-v7)))
+
+(declaim (inline make-v7-sym))
+(defun make-v7-sym ()
+  (to-sym (make-v7)))

@@ -81,3 +81,19 @@
           (make-v1-from-timestamp (+ (* base +100nanos-per-second+)
                                      (mod ticks +100nanos-per-second+))
                                   clock-seq)))))
+
+(declaim (inline make-v1-integer))
+(defun make-v1-integer ()
+  (to-integer (make-v1)))
+
+(declaim (inline make-v1-string))
+(defun make-v1-string ()
+  (to-string (make-v1)))
+
+(declaim (inline make-v1-octets))
+(defun make-v1-octets ()
+  (to-octets (make-v1)))
+
+(declaim (inline make-v1-sym))
+(defun make-v1-sym ()
+  (to-sym (make-v1)))

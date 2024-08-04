@@ -59,3 +59,19 @@
  Implementation is based on generating a version 1 uuid value and
  reordering the timestamp. See frugal-uuid-v1.lisp for details."
   (make-v6-from-v1 (make-v1)))
+
+(declaim (inline make-v6-integer))
+(defun make-v6-integer ()
+  (to-integer (make-v6)))
+
+(declaim (inline make-v6-string))
+(defun make-v6-string ()
+  (to-string (make-v6)))
+
+(declaim (inline make-v6-octets))
+(defun make-v6-octets ()
+  (to-octets (make-v6)))
+
+(declaim (inline make-v6-sym))
+(defun make-v6-sym ()
+  (to-sym (make-v6)))
