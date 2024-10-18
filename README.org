@@ -49,13 +49,20 @@ The following implementations and operating systems are tested via [[https://git
 
 ** Installation
 
-cl-frugal-uuid can be installed via [[https://www.quicklisp.org/][Quicklisp]] from the [[https://ultralisp.org/][Ultralisp]]
-distribution:
+cl-frugal-uuid can be installed via [[https://www.quicklisp.org/][Quicklisp]]:
+
+#+begin_src lisp
+  (ql:quickload :frugal-uuid)
+#+end_src
+
+The latest version is available from the [[https://ultralisp.org/][Ultralisp]] distribution:
 
 #+begin_src lisp
   (ql-dist:install-dist "http://dist.ultralisp.org/" :prompt nil)
   (ql:quickload :frugal-uuid)
 #+end_src
+
+Alternatively you can also rely on [[https://github.com/ocicl/ocicl][ocicl]].
 
 ** Basic usage
 
