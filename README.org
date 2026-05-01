@@ -3,7 +3,7 @@
 #+begin_html
 <div align="center">
   <a href="https://upload.wikimedia.org/wikipedia/commons/5/5f/NASA_satellite_view_of_Southern_Ocean_phytoplankton_bloom_%28crop%29.jpg" target="_blank">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/NASA_satellite_view_of_Southern_Ocean_phytoplankton_bloom_%28crop%29.jpg/320px-NASA_satellite_view_of_Southern_Ocean_phytoplankton_bloom_%28crop%29.jpg" width="220" height="157">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/NASA_satellite_view_of_Southern_Ocean_phytoplankton_bloom_%28crop%29.jpg/250px-NASA_satellite_view_of_Southern_Ocean_phytoplankton_bloom_%28crop%29.jpg" width="220" height="157">
   </a>
 </div>
 <p align="center">
